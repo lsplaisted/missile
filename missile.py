@@ -1,4 +1,4 @@
-import turtle, math, time as t, random, keyboard, mouse, tkinter
+import turtle, math, time as t, random, keyboard, mouse, tkinter, os
 from just_playback import Playback
 playback = Playback()
 root = tkinter.Tk()
@@ -256,50 +256,20 @@ def ask_time():
     t.sleep(.2)
     while not pressed:
         if keyboard.is_pressed('1') or (mouse.is_pressed('left') and is_within(0,55,-160,25)):
-            pen.clear()
             pressed = True
             gtime = 10
-            playback.stop()
-            playback.load_file('C:\Lucas\Games\Missile\game_song.mp3')
-            playback.play()
-            playback.loop_at_end(True)
-            start()
         elif keyboard.is_pressed('2') or (mouse.is_pressed('left') and is_within(160,55,0,25)):
-            pen.clear()
             pressed = True
             gtime = 20
-            playback.stop()
-            playback.load_file('C:\Lucas\Games\Missile\game_song.mp3')
-            playback.play()
-            playback.loop_at_end(True)
-            start()
         elif keyboard.is_pressed('3') or (mouse.is_pressed('left') and is_within(0,25,-160,-5)):
-            pen.clear()
             pressed = True
             gtime = 30
-            playback.stop()
-            playback.load_file('C:\Lucas\Games\Missile\game_song.mp3')
-            playback.play()
-            playback.loop_at_end(True)
-            start()
         elif keyboard.is_pressed('4') or (mouse.is_pressed('left') and is_within(160,25,0,-5)):
-            pen.clear()
             pressed = True
             gtime = 45 
-            playback.stop()
-            playback.load_file('C:\Lucas\Games\Missile\game_song.mp3')
-            playback.play()
-            playback.loop_at_end(True)
-            start()
         elif keyboard.is_pressed('5') or (mouse.is_pressed('left') and is_within(0,-5,-160,-35)):
-            pen.clear()
             pressed = True
             gtime = 60
-            playback.stop()
-            playback.load_file('C:\Lucas\Games\Missile\game_song.mp3')
-            playback.play()
-            playback.loop_at_end(True)
-            start()
         elif keyboard.is_pressed('6') or (mouse.is_pressed('left') and is_within(160,-5,0,-35)):
             pen.clear()
             pressed = True
@@ -307,11 +277,22 @@ def ask_time():
                 ask_mode()
             if players == 2:
                 askplay()
+    pen.clear()
+    playback.stop()
+    thisdir = os.path.dirname(os.path.abspath(__file__))
+    mp3Path = os.path.join(thisdir, 'game_song.mp3')
+    playback.load_file(mp3Path)
+    playback.play()
+    playback.loop_at_end(True)
+    start()
+    return
 
 def askplay():
     global players
     turtle.tracer(0)
-    playback.load_file('C:\Lucas\Games\Missile\menu_song.mp3')
+    thisdir = os.path.dirname(os.path.abspath(__file__))
+    mp3Path = os.path.join(thisdir, 'menu_song.mp3')
+    playback.load_file(mp3Path)
     playback.play()
     playback.loop_at_end(True)
     pen.goto(0,80)
@@ -362,7 +343,9 @@ def explode(target): #improve later
     misflame.hideturtle()
     satflame.hideturtle()
     target.shape('circle')
-    playback.load_file('C:\Lucas\Games\Missile\explosion.mp3')
+    thisdir = os.path.dirname(os.path.abspath(__file__))
+    mp3Path = os.path.join(thisdir, 'explosion.mp3')
+    playback.load_file(mp3Path)
     playback.play()
     for i in range(25):
         if i < 4:
