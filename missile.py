@@ -5,13 +5,18 @@ root = tkinter.Tk()
 
 width = root.winfo_screenwidth()
 height = root.winfo_screenheight()
-print(width,height)
+winwidth = turtle.window_width()
+winheight = turtle.window_height()
+if winwidth/winheight < 16/9:
+    scalefactor = winwidth/1536
+if winwidth/winheight > 16/9:
+    scalefactor = winheight/960
 root.destroy()
 
 turtle.tracer(0)
 screen = turtle.Screen()
 screenTk = screen.getcanvas().winfo_toplevel()
-screenTk.attributes("-fullscreen", True)
+#screenTk.attributes("-fullscreen", True)
 screen.colormode(255)
 screen.bgcolor('black')
 
@@ -83,7 +88,7 @@ display.hideturtle()
 display.penup()
 display.color('white')
 display.speed(0)
-display.goto(-730,400)
+display.goto(-730*scalefactor,400*scalefactor)
 
 satdir = 0 
 satrot =0
@@ -95,9 +100,9 @@ satyvel = 0
 misxvel = 0
 misyvel = 0
 satx = 0
-saty = 150
+saty = 150*scalefactor
 misx = 0
-misy = -150
+misy = -150*scalefactor
 mode = ''
 gtime = 20
 running = False
@@ -163,16 +168,18 @@ def scale(target):
 scale(missile)
 scale(satilite)
 scale(panel)
+scale(satflame)
+scale(misflame)
 
 def showtime(rtime):
     global time
     display.clear()
     if time>0.1:
-        display.goto(-730,350)
-        display.write('TIME: '+str(rtime),font=('Verdana',25,'normal'))
+        display.goto(-730*scalefactor,350*scalefactor)
+        display.write('TIME: '+str(rtime),font=('Verdana',round(25*scalefactor)))
     else:
         display.goto(0,0)
-        display.write(rtime,font=('Verdana',40,'normal'),align='center')
+        display.write(rtime,font=('Verdana',round(40*scalefactor)),align='center')
 
 def controls():
     global swapped
@@ -245,7 +252,7 @@ def controls():
     turtle.tracer(1)
     pressed = False
     while not pressed:
-        screenTk.attributes("-fullscreen", True)
+        #screenTk.attributes("-fullscreen", True)
         litterbox()
         bledge.color(0,30,40)
         tredge.color(0,30,40)
@@ -276,7 +283,7 @@ def ask_mode():
     pressed = False
     t.sleep(.2)
     while not pressed:
-        screenTk.attributes("-fullscreen", True)
+        #screenTk.attributes("-fullscreen", True)
         if keyboard.is_pressed('1') or (mouse.is_pressed('left') and is_within(120*scalefactor,55*scalefactor,-120*scalefactor,25*scalefactor)):
             pen.clear()
             pressed = True
@@ -314,7 +321,7 @@ def ask_time():
     turtle.tracer(1)
     t.sleep(.2)
     while not pressed:
-        screenTk.attributes("-fullscreen", True)
+        #screenTk.attributes("-fullscreen", True)
         if keyboard.is_pressed('1') or (mouse.is_pressed('left') and is_within(0*scalefactor,55*scalefactor,-160*scalefactor,25*scalefactor)):
             pressed = True
             gtime = 10
@@ -369,7 +376,7 @@ def askplay():
     pressed = False
     t.sleep(.2)
     while not pressed:
-        screenTk.attributes("-fullscreen", True)
+        #screenTk.attributes("-fullscreen", True)
         if keyboard.is_pressed('1') or (mouse.is_pressed('left') and is_within(90*scalefactor,55*scalefactor,-90*scalefactor,25*scalefactor)):
             pen.clear()
             pressed = True
@@ -467,7 +474,7 @@ def reset():
     global misyvel
     global mode
     global astroids, astxy, astvel
-    screenTk.attributes("-fullscreen", True)
+    #screenTk.attributes("-fullscreen", True)
     turtle.tracer(0)
     screen.bgcolor('black')
     running=False
@@ -504,7 +511,8 @@ def reset():
     satilite.color(255, 215, 0)
     missile.color('white')
     missile.shape('missile')
-    missile.shapesize(1*scalefactor,1*scalefactor)
+    scale(missile)
+    scale(satilite)
     satflame.hideturtle()
     misflame.hideturtle()
     bledge.hideturtle()
@@ -535,7 +543,7 @@ def run():
     global targy
     global astroids, astxy, astvel
     global swapped
-    screenTk.attributes("-fullscreen", True)
+    #screenTk.attributes("-fullscreen", True)
     if running:
         if keyboard.is_pressed('esc'):
             reset()
@@ -569,10 +577,10 @@ def run():
                 return
             satx += satxvel*scalefactor
             saty += satyvel*scalefactor
-            satilite.goto(satx*scalefactor,saty*scalefactor)
-            panel.goto(satx*scalefactor,saty*scalefactor)
-            misx += misxvel
-            misy += misyvel
+            satilite.goto(satx,saty)
+            panel.goto(satx,saty)
+            misx += misxvel*scalefactor
+            misy += misyvel*scalefactor
             missile.goto(misx,misy)
             if (misx <= satx + 30*scalefactor) and (misx >= satx - 30*scalefactor) and (misy <= saty+30*scalefactor) and (misy >= saty - 30*scalefactor):
                 missile.hideturtle()
@@ -657,7 +665,7 @@ def run():
                 for astroid in range(len(astroids)):
                     astxy[astroid][0] += astvel[astroid][0]
                     astxy[astroid][1] += astvel[astroid][1]
-                    astroids[astroid].goto(astxy[astroid][0]*scalefactor,astxy[astroid][1]*scalefactor)
+                    astroids[astroid].goto(astxy[astroid])
             if players == 2:
                 if not swapped:
                     if keyboard.is_pressed('w'):
