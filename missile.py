@@ -137,7 +137,7 @@ def litterbox():
         bledge.goto(0, (winheight / 2 - bandheight / 2) * -1 )
         tredge.shapesize(bandheight/20, winwidth/20)
         bledge.shapesize(bandheight/20, winwidth/20)
-        scalefactor = winheight/winwidth
+        scalefactor = winwidth/1536
     if winwidth/winheight > 16/9:
         x = (((winheight/9)*16)/2)
         bandwidth = winwidth / 2 - x
@@ -145,10 +145,24 @@ def litterbox():
         bledge.goto((winwidth / 2 - bandwidth / 2) * -1, 0)
         tredge.shapesize( winheight/20,bandwidth/20)
         bledge.shapesize( winheight/20,bandwidth/20)
-        scalefactor = winwidth/winheight
+        scalefactor = winheight/960
 litterbox()
 bledge.hideturtle()
 tredge.hideturtle()
+
+def scale(target):
+    global height,width
+    winwidth = turtle.window_width()
+    winheight = turtle.window_height()
+    if winwidth/winheight < 16/9:
+        scalefactor = winwidth/1536
+    if winwidth/winheight >= 16/9:
+        scalefactor = winheight/960
+    target.shapesize(scalefactor,scalefactor)
+
+scale(missile)
+scale(satilite)
+scale(panel)
 
 def showtime(rtime):
     global time
@@ -163,71 +177,71 @@ def showtime(rtime):
 def controls():
     global swapped
     pen.clear()
-    panel.goto(-700,330)
-    satilite.goto(-700,330)
-    missile.goto(-700,180)
+    panel.goto(-700*scalefactor,330*scalefactor)
+    satilite.goto(-700*scalefactor,330*scalefactor)
+    missile.goto(-700*scalefactor,180*scalefactor)
     missile.setheading(90)
     screen.bgcolor(0,43,50)
     turtle.tracer(0)
     t.sleep(.2)
     if not swapped:
-        pen.goto(-650,310)
-        pen.write('SATELITE CONTROLS:',font=('Yu Gothic UI Semibold', 30))
-        pen.goto(-650,280)
-        pen.write('W; ACCELERATE',font=('Yu Gothic UI Semibold', 18))
-        pen.goto(-650,255)
-        pen.write('A/D; ROTATE',font=('Yu Gothic UI Semibold', 18))
-        pen.goto(-650,230)
-        pen.write('S+A/S+D; ACCELERATE SIDEWAYS',font=('Yu Gothic UI Semibold', 18))
-        pen.goto(-650,170)
-        pen.write('MISSILE CONTROLS:',font=('Yu Gothic UI Semibold', 30))
-        pen.goto(-650,140)
-        pen.write('UP ACCELERATE',font=('Yu Gothic UI Semibold', 18))
-        pen.goto(-650,115)
-        pen.write('LEFT/RIGHT; ROTATE',font=('Yu Gothic UI Semibold', 18))
-        pen.goto(-650,90)
-        pen.write('DOWN+LEFT/DOWN+RIGHT; ACCELERATE SIDEWAYS',font=('Yu Gothic UI Semibold', 18))
+        pen.goto(-650*scalefactor,310*scalefactor)
+        pen.write('SATELITE CONTROLS:',font=('Yu Gothic UI Semibold', round(30*scalefactor)))
+        pen.goto(-650*scalefactor,280*scalefactor)
+        pen.write('W; ACCELERATE',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
+        pen.goto(-650*scalefactor,255*scalefactor)
+        pen.write('A/D; ROTATE',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
+        pen.goto(-650*scalefactor,230*scalefactor)
+        pen.write('S+A/S+D; ACCELERATE SIDEWAYS',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
+        pen.goto(-650*scalefactor,170*scalefactor)
+        pen.write('MISSILE CONTROLS:',font=('Yu Gothic UI Semibold', round(30*scalefactor)))
+        pen.goto(-650*scalefactor,140*scalefactor)
+        pen.write('UP ACCELERATE',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
+        pen.goto(-650*scalefactor,115*scalefactor)
+        pen.write('LEFT/RIGHT; ROTATE',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
+        pen.goto(-650*scalefactor,90*scalefactor)
+        pen.write('DOWN+LEFT/DOWN+RIGHT; ACCELERATE SIDEWAYS',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
     else:
-        pen.goto(-650,310)
-        pen.write('SATELITE CONTROLS:',font=('Yu Gothic UI Semibold', 30))
-        pen.goto(-650,280)
-        pen.write('UP; ACCELERATE',font=('Yu Gothic UI Semibold', 18))
-        pen.goto(-650,255)
-        pen.write('LEFT/RIGHT; ROTATE',font=('Yu Gothic UI Semibold', 18))
-        pen.goto(-650,230)
-        pen.write('DOWN+LEFT/DOWN+RIGHT; ACCELERATE SIDEWAYS',font=('Yu Gothic UI Semibold', 18))
-        pen.goto(-650,170)
-        pen.write('MISSILE CONTROLS:',font=('Yu Gothic UI Semibold', 30))
-        pen.goto(-650,140)
-        pen.write('W ACCELERATE',font=('Yu Gothic UI Semibold', 18))
-        pen.goto(-650,115)
-        pen.write('D/A; ROTATE',font=('Yu Gothic UI Semibold', 18))
-        pen.goto(-650,90)
-        pen.write('S+A/S+D; ACCELERATE SIDEWAYS',font=('Yu Gothic UI Semibold', 18))
-    pen.goto(-650,30)
-    pen.write('OTHER CONTROLS:',font=('Yu Gothic UI Semibold', 30))
-    pen.goto(-650,0)
-    pen.write('NUMBER KEYS/CLICKING; SELECTING OPTIONS',font=('Yu Gothic UI Semibold', 18))
-    pen.goto(-650,-25)
-    pen.write('ESC; QUIT WHILE PLAYING',font=('Yu Gothic UI Semibold', 18))
-    pen.goto(-650,-50)
-    pen.write('S+DOWN SWAP CONTROLS(ONLY WORKS ON CONTROLS SCREEN)',font=('Yu Gothic UI Semibold', 18))
-    pen.goto(0,310)
-    pen.write('OBJECT OF THE GAME: SATELITE',font=('Yu Gothic UI Semibold', 30))
-    pen.goto(0,280)
-    pen.write('The object of the game for the satelite to survive',font=('Yu Gothic UI Semibold', 18))
-    pen.goto(0,255)
-    pen.write('until the time runs out by dodging the missile and',font=('Yu Gothic UI Semibold', 18))
-    pen.goto(0,230)
-    pen.write('avoiding the astroids.',font=('Yu Gothic UI Semibold', 18))
-    pen.goto(0,170)
-    pen.write('OBJECT OF THE GAME: MISSILE',font=('Yu Gothic UI Semibold', 30))
-    pen.goto(0,140)
-    pen.write('The object of the game for the missile is to hit',font=('Yu Gothic UI Semibold', 18))
-    pen.goto(0,115)
-    pen.write('the satelite and avoid the astroids.',font=('Yu Gothic UI Semibold', 18))
-    pen.goto(430,-430)
-    pen.write('ESC; MAIN MENU',font=('Verdana', 25))
+        pen.goto(-650*scalefactor,310*scalefactor)
+        pen.write('SATELITE CONTROLS:',font=('Yu Gothic UI Semibold', round(30*scalefactor)))
+        pen.goto(-650*scalefactor,280*scalefactor)
+        pen.write('UP; ACCELERATE',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
+        pen.goto(-650*scalefactor,255*scalefactor)
+        pen.write('LEFT/RIGHT; ROTATE',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
+        pen.goto(-650*scalefactor,230*scalefactor)
+        pen.write('DOWN+LEFT/DOWN+RIGHT; ACCELERATE SIDEWAYS',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
+        pen.goto(-650*scalefactor,170*scalefactor)
+        pen.write('MISSILE CONTROLS:',font=('Yu Gothic UI Semibold', round(30*scalefactor)))
+        pen.goto(-650*scalefactor,140*scalefactor)
+        pen.write('W ACCELERATE',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
+        pen.goto(-650*scalefactor,115*scalefactor)
+        pen.write('D/A; ROTATE',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
+        pen.goto(-650*scalefactor,90*scalefactor)
+        pen.write('S+A/S+D; ACCELERATE SIDEWAYS',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
+    pen.goto(-650*scalefactor,30*scalefactor)
+    pen.write('OTHER CONTROLS:',font=('Yu Gothic UI Semibold', round(30*scalefactor)))
+    pen.goto(-650*scalefactor,0*scalefactor)
+    pen.write('NUMBER KEYS/CLICKING; SELECTING OPTIONS',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
+    pen.goto(-650*scalefactor,-25*scalefactor)
+    pen.write('ESC; QUIT WHILE PLAYING',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
+    pen.goto(-650*scalefactor,-50*scalefactor)
+    pen.write('S+DOWN SWAP CONTROLS(ONLY WORKS ON CONTROLS SCREEN)',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
+    pen.goto(0*scalefactor,310*scalefactor)
+    pen.write('OBJECT OF THE GAME: SATELITE',font=('Yu Gothic UI Semibold', round(30*scalefactor)))
+    pen.goto(0*scalefactor,280*scalefactor)
+    pen.write('The object of the game for the satelite to survive',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
+    pen.goto(0*scalefactor,255*scalefactor)
+    pen.write('until the time runs out by dodging the missile and',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
+    pen.goto(0*scalefactor,230*scalefactor)
+    pen.write('avoiding the astroids.',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
+    pen.goto(0*scalefactor,170*scalefactor)
+    pen.write('OBJECT OF THE GAME: MISSILE',font=('Yu Gothic UI Semibold', round(30*scalefactor)))
+    pen.goto(0*scalefactor,140*scalefactor)
+    pen.write('The object of the game for the missile is to hit',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
+    pen.goto(0*scalefactor,115*scalefactor)
+    pen.write('the satelite and avoid the astroids.',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
+    pen.goto(430*scalefactor,-430*scalefactor)
+    pen.write('ESC; MAIN MENU',font=('Verdana', round(25*scalefactor)))
     turtle.tracer(1)
     pressed = False
     while not pressed:
@@ -235,7 +249,7 @@ def controls():
         litterbox()
         bledge.color(0,30,40)
         tredge.color(0,30,40)
-        if keyboard.is_pressed('esc') or (mouse.is_pressed('left') and is_within(725,-400,450,-425)):
+        if keyboard.is_pressed('esc') or (mouse.is_pressed('left') and is_within(725*scalefactor,-400*scalefactor,450*scalefactor,-425*scalefactor)):
             pressed = True
             reset()
         if keyboard.is_pressed('s+down'):
@@ -250,30 +264,30 @@ def controls():
 def ask_mode():
     global mode
     turtle.tracer(0)
-    pen.goto(0,80)
-    pen.write('SELECT MODE',font=("Verdana",35, "normal"),align='center')
-    pen.goto(-120,30)
-    pen.write('1. SATELITE MODE',font=("Verdana",20, "normal"),align='left')
-    pen.goto(-120,0)
-    pen.write('2. MISSILE MODE',font=("Verdana",20, "normal"),align='left')
-    pen.goto(-120,-30)
-    pen.write('3. BACK',font=("Verdana",20, "normal"),align='left')
+    pen.goto(0*scalefactor,80*scalefactor)
+    pen.write('SELECT MODE',font=("Verdana",round(35*scalefactor)),align='center')
+    pen.goto(-120*scalefactor,30*scalefactor)
+    pen.write('1. SATELITE MODE',font=("Verdana",round(20*scalefactor)),align='left')
+    pen.goto(-120*scalefactor,0*scalefactor)
+    pen.write('2. MISSILE MODE',font=("Verdana",round(20*scalefactor)),align='left')
+    pen.goto(-120*scalefactor,-30*scalefactor)
+    pen.write('3. BACK',font=("Verdana",round(20*scalefactor)),align='left')
     turtle.tracer(1)
     pressed = False
     t.sleep(.2)
     while not pressed:
         screenTk.attributes("-fullscreen", True)
-        if keyboard.is_pressed('1') or (mouse.is_pressed('left') and is_within(120,55,-120,25)):
+        if keyboard.is_pressed('1') or (mouse.is_pressed('left') and is_within(120*scalefactor,55*scalefactor,-120*scalefactor,25*scalefactor)):
             pen.clear()
             pressed = True
             mode = 'sat'
             ask_time()
-        if keyboard.is_pressed('2') or (mouse.is_pressed('left') and is_within(120,25,-120,-5)):
+        if keyboard.is_pressed('2') or (mouse.is_pressed('left') and is_within(120*scalefactor,25*scalefactor,-120*scalefactor,-5*scalefactor)):
             pen.clear()
             pressed = True
             mode = 'mis'
             ask_time()
-        if keyboard.is_pressed('3') or (mouse.is_pressed('left') and is_within(120,-5,-120,-35)):
+        if keyboard.is_pressed('3') or (mouse.is_pressed('left') and is_within(120*scalefactor,-5*scalefactor,-120*scalefactor,-35*scalefactor)):
             pen.clear()
             pressed = True
             askplay()
@@ -282,41 +296,41 @@ def ask_time():
     global gtime
     global players
     turtle.tracer(0)
-    pen.goto(0,80)
-    pen.write('SELECT GAME TIME',font=("Verdana",35, "normal"),align='center')
-    pen.goto(-160,30)
-    pen.write('1. 10 SEC',font=("Verdana",20, "normal"),align='left')
-    pen.goto(-160,0)
-    pen.write('3. 30 SEC',font=("Verdana",20, "normal"),align='left')
-    pen.goto(-160,-30)
-    pen.write('5. 1 MIN',font=("Verdana",20, "normal"),align='left')
-    pen.goto(20,30)
-    pen.write('2. 20 SEC',font=("Verdana",20, "normal"),align='left')
-    pen.goto(20,0)
-    pen.write('4. 45 SEC',font=("Verdana",20, "normal"),align='left')
-    pen.goto(20,-30)
-    pen.write('6. BACK',font=("Verdana",20, "normal"),align='left')
+    pen.goto(0*scalefactor,80*scalefactor)
+    pen.write('SELECT GAME TIME',font=("Verdana",round(35*scalefactor)),align='center')
+    pen.goto(-160*scalefactor,30*scalefactor)
+    pen.write('1. 10 SEC',font=("Verdana",round(20*scalefactor)),align='left')
+    pen.goto(-160*scalefactor,0*scalefactor)
+    pen.write('3. 30 SEC',font=("Verdana",round(20*scalefactor)),align='left')
+    pen.goto(-160*scalefactor,-30*scalefactor)
+    pen.write('5. 1 MIN',font=("Verdana",round(20*scalefactor)),align='left')
+    pen.goto(20*scalefactor,30*scalefactor)
+    pen.write('2. 20 SEC',font=("Verdana",round(20*scalefactor)),align='left')
+    pen.goto(20*scalefactor,0*scalefactor)
+    pen.write('4. 45 SEC',font=("Verdana",round(20*scalefactor)),align='left')
+    pen.goto(20*scalefactor,-30*scalefactor)
+    pen.write('6. BACK',font=("Verdana",round(20*scalefactor)),align='left')
     pressed = False
     turtle.tracer(1)
     t.sleep(.2)
     while not pressed:
         screenTk.attributes("-fullscreen", True)
-        if keyboard.is_pressed('1') or (mouse.is_pressed('left') and is_within(0,55,-160,25)):
+        if keyboard.is_pressed('1') or (mouse.is_pressed('left') and is_within(0*scalefactor,55*scalefactor,-160*scalefactor,25*scalefactor)):
             pressed = True
             gtime = 10
-        elif keyboard.is_pressed('2') or (mouse.is_pressed('left') and is_within(160,55,0,25)):
+        elif keyboard.is_pressed('2') or (mouse.is_pressed('left') and is_within(160*scalefactor,55*scalefactor,0*scalefactor,25*scalefactor)):
             pressed = True
             gtime = 20
-        elif keyboard.is_pressed('3') or (mouse.is_pressed('left') and is_within(0,25,-160,-5)):
+        elif keyboard.is_pressed('3') or (mouse.is_pressed('left') and is_within(0*scalefactor,25*scalefactor,-160*scalefactor,-5*scalefactor)):
             pressed = True
             gtime = 30
-        elif keyboard.is_pressed('4') or (mouse.is_pressed('left') and is_within(160,25,0,-5)):
+        elif keyboard.is_pressed('4') or (mouse.is_pressed('left') and is_within(160*scalefactor,25*scalefactor,0*scalefactor,-5*scalefactor)):
             pressed = True
             gtime = 45 
-        elif keyboard.is_pressed('5') or (mouse.is_pressed('left') and is_within(0,-5,-160,-35)):
+        elif keyboard.is_pressed('5') or (mouse.is_pressed('left') and is_within(0*scalefactor,-5*scalefactor,-160*scalefactor,-35*scalefactor)):
             pressed = True
             gtime = 60
-        elif keyboard.is_pressed('6') or (mouse.is_pressed('left') and is_within(160,-5,0,-35)):
+        elif keyboard.is_pressed('6') or (mouse.is_pressed('left') and is_within(160*scalefactor,-5*scalefactor,0*scalefactor,-35*scalefactor)):
             pen.clear()
             pressed = True
             if players == 1:
@@ -341,35 +355,35 @@ def askplay():
     playback.load_file(mp3Path)
     playback.play()
     playback.loop_at_end(True)
-    pen.goto(0,80)
-    pen.write('MISSILE',font=("Verdana",35, "normal"),align='center')
-    pen.goto(-80,30)
-    pen.write('1. 1 PLAYER',font=("Verdana",20, "normal"),align='left')
-    pen.goto(-80,0)
-    pen.write('2. 2 PLAYERS',font=("Verdana",20, "normal"),align='left')
-    pen.goto(-80,-30)
-    pen.write('3. CONTROLS',font=("Verdana",20, "normal"),align='left')
-    pen.goto(-80,-60)
-    pen.write('4. EXIT',font=("Verdana",20, "normal"),align='left')
+    pen.goto(0*scalefactor,80*scalefactor)
+    pen.write('MISSILE',font=("Verdana",round(35*scalefactor)),align='center')
+    pen.goto(-80*scalefactor,30*scalefactor)
+    pen.write('1. 1 PLAYER',font=("Verdana",round(20*scalefactor)),align='left')
+    pen.goto(-80*scalefactor,0*scalefactor)
+    pen.write('2. 2 PLAYERS',font=("Verdana",round(20*scalefactor)),align='left')
+    pen.goto(-80*scalefactor,-30*scalefactor)
+    pen.write('3. CONTROLS',font=("Verdana",round(20*scalefactor)),align='left')
+    pen.goto(-80*scalefactor,-60*scalefactor)
+    pen.write('4. EXIT',font=("Verdana",round(20*scalefactor)),align='left')
     turtle.tracer(1)
     pressed = False
     t.sleep(.2)
     while not pressed:
         screenTk.attributes("-fullscreen", True)
-        if keyboard.is_pressed('1') or (mouse.is_pressed('left') and is_within(90,55,-90,25)):
+        if keyboard.is_pressed('1') or (mouse.is_pressed('left') and is_within(90*scalefactor,55*scalefactor,-90*scalefactor,25*scalefactor)):
             pen.clear()
             pressed = True
             players = 1
             ask_mode()
-        if keyboard.is_pressed('2') or (mouse.is_pressed('left') and is_within(90,25,-90,-5)):
+        if keyboard.is_pressed('2') or (mouse.is_pressed('left') and is_within(90*scalefactor,25*scalefactor,-90*scalefactor,-5*scalefactor)):
             pen.clear()
             pressed = True
             players = 2
             ask_time()
-        if keyboard.is_pressed('3') or (mouse.is_pressed('left') and is_within(90,-5,-90,-35)):
+        if keyboard.is_pressed('3') or (mouse.is_pressed('left') and is_within(90*scalefactor,-5*scalefactor,-90*scalefactor,-35*scalefactor)):
             pressed = True
             controls()
-        if keyboard.is_pressed('4') or (mouse.is_pressed('left') and is_within(90,-35,-90,-65)):
+        if keyboard.is_pressed('4') or (mouse.is_pressed('left') and is_within(90*scalefactor,-35*scalefactor,-90*scalefactor,-65*scalefactor)):
             quit()
 
 def start():
@@ -409,7 +423,7 @@ def explode(target): #improve later
             if b < 0:
                 b = 0
             circle_diameter *= 1.45
-            target.shapesize(circle_diameter,circle_diameter)
+            target.shapesize(circle_diameter*scalefactor,circle_diameter*scalefactor)
         elif i < 15:
             r -= 16
             g -= 18
@@ -421,7 +435,7 @@ def explode(target): #improve later
             if b < 0:
                 b = 0
             circle_diameter *= 1.15
-            target.shapesize(circle_diameter,circle_diameter)
+            target.shapesize(circle_diameter*scalefactor,circle_diameter*scalefactor)
         else:
             r -= 32
             g -= 19
@@ -432,22 +446,7 @@ def explode(target): #improve later
                 g = 0
             if b < 0:
                 b = 0
-        winwidth = turtle.window_width()
-        winheight = turtle.window_height()
-        if winwidth/winheight < 16/9:
-            y = (((winwidth/16)*9)/2)
-            bandheight = winheight / 2 - y
-            tredge.goto(0, winheight / 2 - bandheight / 2 )
-            bledge.goto(0, (winheight / 2 - bandheight / 2) * -1 )
-            tredge.shapesize(bandheight/20, winwidth/20)
-            bledge.shapesize(bandheight/20, winwidth/20)
-        if winwidth/winheight > 16/9:
-            x = (((winheight/9)*16)/2)
-            bandwidth = winwidth / 2 - x
-            tredge.goto(winwidth / 2 - bandwidth / 2, 0)
-            bledge.goto((winwidth / 2 - bandwidth / 2) * -1, 0)
-            tredge.shapesize( winheight/20,bandwidth/20)
-            bledge.shapesize( winheight/20,bandwidth/20)
+        litterbox()
         target.color(r, g, b)
         turtle.tracer(1)
 def reset():
@@ -505,7 +504,7 @@ def reset():
     satilite.color(255, 215, 0)
     missile.color('white')
     missile.shape('missile')
-    missile.shapesize(1,1)
+    missile.shapesize(1*scalefactor,1*scalefactor)
     satflame.hideturtle()
     misflame.hideturtle()
     bledge.hideturtle()
@@ -568,33 +567,33 @@ def run():
                 t.sleep(1)
                 reset()
                 return
-            satx += satxvel
-            saty += satyvel
-            satilite.goto(satx,saty)
-            panel.goto(satx,saty)
+            satx += satxvel*scalefactor
+            saty += satyvel*scalefactor
+            satilite.goto(satx*scalefactor,saty*scalefactor)
+            panel.goto(satx*scalefactor,saty*scalefactor)
             misx += misxvel
             misy += misyvel
             missile.goto(misx,misy)
-            if (misx <= satx + 30) and (misx >= satx - 30) and (misy <= saty+30) and (misy >= saty - 30):
+            if (misx <= satx + 30*scalefactor) and (misx >= satx - 30*scalefactor) and (misy <= saty+30*scalefactor) and (misy >= saty - 30*scalefactor):
                 missile.hideturtle()
                 explode(satilite)
                 pen.goto(0,0)
                 display.clear()
-                pen.write('MISSILE WINS',font=("Verdana",35, "normal"),align='center')
+                pen.write('MISSILE WINS',font=("Verdana",round(35*scalefactor)),align='center')
                 t.sleep(1.0)
                 reset()
                 return
             for pos in astxy:
-                if (pos[0] <= satx + 30 and pos[0] >= satx - 30) and (pos[1] <= saty + 30 and pos[1] >= saty - 30):
+                if (pos[0] <= satx + 30*scalefactor and pos[0] >= satx - 30*scalefactor) and (pos[1] <= saty + 30*scalefactor and pos[1] >= saty - 30*scalefactor):
                     explode(satilite)
                     pen.goto(0,0)
                     display.clear()
-                    pen.write('MISSILE WINS',font=("Verdana",35, "normal"),align='center')
+                    pen.write('MISSILE WINS',font=("Verdana",round(35*scalefactor)),align='center')
                     t.sleep(1.0)
                     reset()
                     return
             for pos in astxy:
-                if (pos[0] <= misx + 30 and pos[0] >= misx - 30) and (pos[1] <= misy + 30 and pos[1] >= misy - 30):
+                if (pos[0] <= misx + 30*scalefactor and pos[0] >= misx - 30*scalefactor) and (pos[1] <= misy + 30*scalefactor and pos[1] >= misy - 30*scalefactor):
                     explode(missile)
                     pen.goto(0,0)
                     display.clear()
@@ -612,44 +611,44 @@ def run():
                 side = random.randrange(1,5)
                 if side == 1:
                     astroids.append(turtle.Turtle())
-                    astxy.append([800,random.randint(-300,300)])
-                    astvel.append((random.randrange(-8,-3),random.randrange(-4,4)))
+                    astxy.append([800*scalefactor,random.randint(round(-300*scalefactor),round(300*scalefactor))])
+                    astvel.append((random.randrange(round(-8*scalefactor),round(-3*scalefactor)),random.randrange(round(-4*scalefactor),round(4*scalefactor))))
                     ast = len(astroids) - 1
                     astroids[ast].color(128,128,128)
-                    astroids[ast].shapesize(1.5,1.5)
+                    astroids[ast].shapesize(1.5*scalefactor,1.5*scalefactor)
                     astroids[ast].penup()
                     astroids[ast].speed(0)
                     astroids[ast].shape('circle')
                     astroids[ast].goto(astxy[ast])
                 if side == 2:
                     astroids.append(turtle.Turtle())
-                    astxy.append([random.randrange(-600,600),-500])
-                    astvel.append((random.randrange(-4,4),random.randrange(3,8)))
+                    astxy.append([random.randrange(round(-600*scalefactor),round(600*scalefactor)),-500*scalefactor])
+                    astvel.append((random.randrange(round(-4*scalefactor),round(4*scalefactor)),random.randrange(round(3*scalefactor),round(8*scalefactor))))
                     ast = len(astroids) - 1
                     astroids[ast].color(128,128,128)
-                    astroids[ast].shapesize(1.5,1.5)
+                    astroids[ast].shapesize(1.5*scalefactor,1.5*scalefactor)
                     astroids[ast].penup()
                     astroids[ast].speed(0)
                     astroids[ast].shape('circle')
                     astroids[ast].goto(astxy[ast])
                 if side == 3:
                     astroids.append(turtle.Turtle())
-                    astxy.append([-800,random.randint(-300,300)])
-                    astvel.append((random.randrange(3,8),random.randrange(-4,4)))
+                    astxy.append([-800*scalefactor,random.randint(round(-300*scalefactor),round(300*scalefactor))])
+                    astvel.append((random.randrange(round(3*scalefactor),round(8*scalefactor)),random.randrange(round(-4*scalefactor),round(4*scalefactor))))
                     ast = len(astroids) - 1
                     astroids[ast].color(128,128,128)
-                    astroids[ast].shapesize(1.5,1.5)
+                    astroids[ast].shapesize(1.5*scalefactor,1.5*scalefactor)
                     astroids[ast].penup()
                     astroids[ast].speed(0)
                     astroids[ast].shape('circle')
                     astroids[ast].goto(astxy[ast])
                 if side == 4:
                     astroids.append(turtle.Turtle())
-                    astxy.append([random.randrange(-600,600),500])
-                    astvel.append((random.randrange(-4,4),random.randrange(-8,-3)))
+                    astxy.append([random.randrange(round(-600*scalefactor),round(600*scalefactor)),500*scalefactor])
+                    astvel.append((random.randrange(round(-4*scalefactor),round(4*scalefactor)),random.randrange(round(-8*scalefactor),round(-3*scalefactor))))
                     ast = len(astroids) - 1
                     astroids[ast].color(128,128,128)
-                    astroids[ast].shapesize(1.5,1.5)
+                    astroids[ast].shapesize(1.5*scalefactor,1.5*scalefactor)
                     astroids[ast].penup()
                     astroids[ast].speed(0)
                     astroids[ast].shape('circle')
@@ -658,7 +657,7 @@ def run():
                 for astroid in range(len(astroids)):
                     astxy[astroid][0] += astvel[astroid][0]
                     astxy[astroid][1] += astvel[astroid][1]
-                    astroids[astroid].goto(astxy[astroid])
+                    astroids[astroid].goto(astxy[astroid][0]*scalefactor,astxy[astroid][1]*scalefactor)
             if players == 2:
                 if not swapped:
                     if keyboard.is_pressed('w'):
@@ -753,7 +752,7 @@ def run():
             if mode == 'sat':
                 col = False
                 for ast in range(len(astroids)):
-                    if (astxy[ast][0] <= misx + 400 and astxy[ast][0] >= misx - 400) and (astxy[ast][1] <= misy + 400 and astxy[ast][1] >= misy - 400):
+                    if (astxy[ast][0] <= misx + 400*scalefactor and astxy[ast][0] >= misx - 400*scalefactor) and (astxy[ast][1] <= misy + 400*scalefactor and astxy[ast][1] >= misy - 400*scalefactor):
                         colxy = [[],[0,0]]
                         colxy[0] = astxy[ast].copy()
                         colxy[1][0] = misx
@@ -763,7 +762,7 @@ def run():
                             colxy[0][1] += astvel[ast][0]
                             colxy[1][0] += misxvel
                             colxy[1][1] += misyvel
-                            if (colxy[0][0] <= colxy[1][0] + 30 and colxy[0][0] >= colxy[1][0] - 30) and (colxy[0][1] <= colxy[1][1] + 30 and colxy[0][1] >= colxy[1][1] - 30):
+                            if (colxy[0][0] <= colxy[1][0] + 30*scalefactor and colxy[0][0] >= colxy[1][0] - 30*scalefactor) and (colxy[0][1] <= colxy[1][1] + 30*scalefactor and colxy[0][1] >= colxy[1][1] - 30*scalefactor):
                                 col = True
                                 mistar = missile.towards(astroids[ast])+90
                                 if misx-satx>0:
@@ -837,7 +836,7 @@ def run():
                     targx=random.randint(-738,738)
                     targy=random.randint(-450,450)
                 for ast in range(len(astroids)):
-                    if (astxy[ast][0] <= satx + 400 and astxy[ast][0] >= satx - 400) and (astxy[ast][1] <= saty + 400 and astxy[ast][1] >= saty - 400):
+                    if (astxy[ast][0] <= satx + 400*scalefactor and astxy[ast][0] >= satx - 400*scalefactor) and (astxy[ast][1] <= saty + 400*scalefactor and astxy[ast][1] >= saty - 400*scalefactor):
                         colxy = [[],[0,0]]
                         colxy[0] = astxy[ast].copy()
                         colxy[1][0] = satx
@@ -847,7 +846,7 @@ def run():
                             colxy[0][1] += astvel[ast][0]
                             colxy[1][0] += satxvel
                             colxy[1][1] += satyvel
-                            if (colxy[0][0] <= colxy[1][0] + 30 and colxy[0][0] >= colxy[1][0] - 30) and (colxy[0][1] <= colxy[1][1] + 30 and colxy[0][1] >= colxy[1][1] - 30):
+                            if (colxy[0][0] <= colxy[1][0] + 30*scalefactor and colxy[0][0] >= colxy[1][0] - 30*scalefactor) and (colxy[0][1] <= colxy[1][1] + 30*scalefactor and colxy[0][1] >= colxy[1][1] - 30*scalefactor):
                                 col = True
                                 satar = satilite.towards(astroids[ast])+90
                                 if satx-targx>0:
@@ -915,30 +914,30 @@ def run():
                     misrot += .3
                 elif not keyboard.is_pressed('d') and not keyboard.is_pressed('right') and misrot > 0:
                     misrot -= .5
-            if satx>740:
-                satxvel=-2.5
+            if satx>740*scalefactor:
+                satxvel=-2.5*scalefactor
                 satyvel=0
-            if satx<-740:
-                satxvel=2.5
+            if satx<-740*scalefactor:
+                satxvel=2.5*scalefactor
                 satyvel=0
-            if saty>400:
+            if saty>400*scalefactor:
                 satxvel=0
-                satyvel=-2.5
-            if saty<-400:
+                satyvel=-2.5*scalefactor
+            if saty<-400*scalefactor:
                 satxvel=0
-                satyvel=2.5
-            if misx>740:
-                misxvel=-2.5
+                satyvel=2.5*scalefactor
+            if misx>740*scalefactor:
+                misxvel=-2.5*scalefactor
                 misyvel=0
-            if misx<-740:
-                misxvel=2.5
+            if misx<-740*scalefactor:
+                misxvel=2.5*scalefactor
                 misyvel=0
-            if misy>400:
+            if misy>400*scalefactor:
                 misxvel=0
-                misyvel=-2.5
-            if misy<-400:
+                misyvel=-2.5*scalefactor
+            if misy<-400*scalefactor:
                 misxvel=0
-                misyvel=2.5
+                misyvel=2.5*scalefactor
         litterbox()
         screen.tracer(1)
         screen.ontimer(run, 20)
