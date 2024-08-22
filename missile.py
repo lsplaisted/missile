@@ -16,7 +16,7 @@ root.destroy()
 turtle.tracer(0)
 screen = turtle.Screen()
 screenTk = screen.getcanvas().winfo_toplevel()
-#screenTk.attributes("-fullscreen", True)
+screenTk.attributes("-fullscreen", True)
 screen.colormode(255)
 screen.bgcolor('black')
 
@@ -252,7 +252,7 @@ def controls():
     turtle.tracer(1)
     pressed = False
     while not pressed:
-        #screenTk.attributes("-fullscreen", True)
+        screenTk.attributes("-fullscreen", True)
         litterbox()
         bledge.color(0,30,40)
         tredge.color(0,30,40)
@@ -283,7 +283,7 @@ def ask_mode():
     pressed = False
     t.sleep(.2)
     while not pressed:
-        #screenTk.attributes("-fullscreen", True)
+        screenTk.attributes("-fullscreen", True)
         if keyboard.is_pressed('1') or (mouse.is_pressed('left') and is_within(120*scalefactor,55*scalefactor,-120*scalefactor,25*scalefactor)):
             pen.clear()
             pressed = True
@@ -321,7 +321,7 @@ def ask_time():
     turtle.tracer(1)
     t.sleep(.2)
     while not pressed:
-        #screenTk.attributes("-fullscreen", True)
+        screenTk.attributes("-fullscreen", True)
         if keyboard.is_pressed('1') or (mouse.is_pressed('left') and is_within(0*scalefactor,55*scalefactor,-160*scalefactor,25*scalefactor)):
             pressed = True
             gtime = 10
@@ -376,7 +376,7 @@ def askplay():
     pressed = False
     t.sleep(.2)
     while not pressed:
-        #screenTk.attributes("-fullscreen", True)
+        screenTk.attributes("-fullscreen", True)
         if keyboard.is_pressed('1') or (mouse.is_pressed('left') and is_within(90*scalefactor,55*scalefactor,-90*scalefactor,25*scalefactor)):
             pen.clear()
             pressed = True
@@ -474,7 +474,7 @@ def reset():
     global misyvel
     global mode
     global astroids, astxy, astvel
-    #screenTk.attributes("-fullscreen", True)
+    screenTk.attributes("-fullscreen", True)
     turtle.tracer(0)
     screen.bgcolor('black')
     running=False
@@ -543,7 +543,7 @@ def run():
     global targy
     global astroids, astxy, astvel
     global swapped
-    #screenTk.attributes("-fullscreen", True)
+    screenTk.attributes("-fullscreen", True)
     if running:
         if keyboard.is_pressed('esc'):
             reset()
