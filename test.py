@@ -29,13 +29,20 @@ tredge.speed(0)
 while True:
     winwidth = turtle.window_width()
     winheight = turtle.window_height()
-    if width/height < 16/9:
+    if winwidth/winheight < 16/9:
         y = (((winwidth/16)*9)/2)
-        print(y)
-        tredge.goto(0, (y))
-        bledge.goto(0,(y*-1))
-        tredge.shapesize(1,winwidth/20)
-        bledge.shapesize(1,winwidth/20)
+        bandheight = winheight / 2 - y
+        tredge.goto(0, winheight / 2 - bandheight / 2 )
+        bledge.goto(0, (winheight / 2 - bandheight / 2) * -1 )
+        tredge.shapesize(bandheight/20, winwidth/20)
+        bledge.shapesize(bandheight/20, winwidth/20)
+    if winwidth/winheight > 16/9:
+        x = (((winheight/9)*16)/2)
+        bandwidth = winwidth / 2 - x
+        tredge.goto(winwidth / 2 - bandwidth / 2, 0)
+        bledge.goto((winwidth / 2 - bandwidth / 2) * -1, 0)
+        tredge.shapesize( winheight/20,bandwidth/20)
+        bledge.shapesize( winheight/20,bandwidth/20)
 
     if keyboard.is_pressed('esc'):
         quit()
