@@ -5,6 +5,7 @@ root = tkinter.Tk()
 
 width = root.winfo_screenwidth()
 height = root.winfo_screenheight()
+print(width,height)
 root.destroy()
 
 turtle.tracer(0)
@@ -64,6 +65,19 @@ pen.penup()
 pen.color('white')
 pen.speed(0)
 
+bledge = turtle.Turtle()
+bledge.penup()
+bledge.shape('square')
+bledge.speed(0)
+bledge.color(64,64,64)
+bledge.hideturtle()
+tredge = turtle.Turtle()
+tredge.penup()
+tredge.shape('square')
+tredge.speed(0)
+tredge.color(64,64,64)
+tredge.hideturtle()
+
 display=turtle.Turtle()
 display.hideturtle()
 display.penup()
@@ -110,11 +124,37 @@ def is_within(x1,y1,x2,y2):# x1 and y1 must be greater than x2 and y2
     else:
         return False
 
+def litterbox():
+    global height, width, scalefactor
+    winwidth = turtle.window_width()
+    winheight = turtle.window_height()
+    bledge.showturtle()
+    tredge.showturtle()
+    if winwidth/winheight < 16/9:
+        y = (((winwidth/16)*9)/2)
+        bandheight = winheight / 2 - y
+        tredge.goto(0, winheight / 2 - bandheight / 2 )
+        bledge.goto(0, (winheight / 2 - bandheight / 2) * -1 )
+        tredge.shapesize(bandheight/20, winwidth/20)
+        bledge.shapesize(bandheight/20, winwidth/20)
+        scalefactor = winheight/winwidth
+    if winwidth/winheight > 16/9:
+        x = (((winheight/9)*16)/2)
+        bandwidth = winwidth / 2 - x
+        tredge.goto(winwidth / 2 - bandwidth / 2, 0)
+        bledge.goto((winwidth / 2 - bandwidth / 2) * -1, 0)
+        tredge.shapesize( winheight/20,bandwidth/20)
+        bledge.shapesize( winheight/20,bandwidth/20)
+        scalefactor = winwidth/winheight
+litterbox()
+bledge.hideturtle()
+tredge.hideturtle()
+
 def showtime(rtime):
     global time
     display.clear()
     if time>0.1:
-        display.goto(-730,400)
+        display.goto(-730,350)
         display.write('TIME: '+str(rtime),font=('Verdana',25,'normal'))
     else:
         display.goto(0,0)
@@ -123,74 +163,78 @@ def showtime(rtime):
 def controls():
     global swapped
     pen.clear()
-    panel.goto(-700,430)
-    satilite.goto(-700,430)
-    missile.goto(-700,280)
+    panel.goto(-700,330)
+    satilite.goto(-700,330)
+    missile.goto(-700,180)
     missile.setheading(90)
     screen.bgcolor(0,43,50)
     turtle.tracer(0)
     t.sleep(.2)
     if not swapped:
-        pen.goto(-650,410)
+        pen.goto(-650,310)
         pen.write('SATELITE CONTROLS:',font=('Yu Gothic UI Semibold', 30))
-        pen.goto(-650,380)
+        pen.goto(-650,280)
         pen.write('W; ACCELERATE',font=('Yu Gothic UI Semibold', 18))
-        pen.goto(-650,355)
+        pen.goto(-650,255)
         pen.write('A/D; ROTATE',font=('Yu Gothic UI Semibold', 18))
-        pen.goto(-650,330)
+        pen.goto(-650,230)
         pen.write('S+A/S+D; ACCELERATE SIDEWAYS',font=('Yu Gothic UI Semibold', 18))
-        pen.goto(-650,270)
+        pen.goto(-650,170)
         pen.write('MISSILE CONTROLS:',font=('Yu Gothic UI Semibold', 30))
-        pen.goto(-650,240)
+        pen.goto(-650,140)
         pen.write('UP ACCELERATE',font=('Yu Gothic UI Semibold', 18))
-        pen.goto(-650,215)
+        pen.goto(-650,115)
         pen.write('LEFT/RIGHT; ROTATE',font=('Yu Gothic UI Semibold', 18))
-        pen.goto(-650,190)
+        pen.goto(-650,90)
         pen.write('DOWN+LEFT/DOWN+RIGHT; ACCELERATE SIDEWAYS',font=('Yu Gothic UI Semibold', 18))
     else:
-        pen.goto(-650,410)
+        pen.goto(-650,310)
         pen.write('SATELITE CONTROLS:',font=('Yu Gothic UI Semibold', 30))
-        pen.goto(-650,380)
+        pen.goto(-650,280)
         pen.write('UP; ACCELERATE',font=('Yu Gothic UI Semibold', 18))
-        pen.goto(-650,355)
+        pen.goto(-650,255)
         pen.write('LEFT/RIGHT; ROTATE',font=('Yu Gothic UI Semibold', 18))
-        pen.goto(-650,330)
+        pen.goto(-650,230)
         pen.write('DOWN+LEFT/DOWN+RIGHT; ACCELERATE SIDEWAYS',font=('Yu Gothic UI Semibold', 18))
-        pen.goto(-650,270)
+        pen.goto(-650,170)
         pen.write('MISSILE CONTROLS:',font=('Yu Gothic UI Semibold', 30))
-        pen.goto(-650,240)
+        pen.goto(-650,140)
         pen.write('W ACCELERATE',font=('Yu Gothic UI Semibold', 18))
-        pen.goto(-650,215)
+        pen.goto(-650,115)
         pen.write('D/A; ROTATE',font=('Yu Gothic UI Semibold', 18))
-        pen.goto(-650,190)
+        pen.goto(-650,90)
         pen.write('S+A/S+D; ACCELERATE SIDEWAYS',font=('Yu Gothic UI Semibold', 18))
-    pen.goto(-650,130)
+    pen.goto(-650,30)
     pen.write('OTHER CONTROLS:',font=('Yu Gothic UI Semibold', 30))
-    pen.goto(-650,100)
+    pen.goto(-650,0)
     pen.write('NUMBER KEYS/CLICKING; SELECTING OPTIONS',font=('Yu Gothic UI Semibold', 18))
-    pen.goto(-650,75)
+    pen.goto(-650,-25)
     pen.write('ESC; QUIT WHILE PLAYING',font=('Yu Gothic UI Semibold', 18))
-    pen.goto(-650,50)
+    pen.goto(-650,-50)
     pen.write('S+DOWN SWAP CONTROLS(ONLY WORKS ON CONTROLS SCREEN)',font=('Yu Gothic UI Semibold', 18))
-    pen.goto(0,410)
+    pen.goto(0,310)
     pen.write('OBJECT OF THE GAME: SATELITE',font=('Yu Gothic UI Semibold', 30))
-    pen.goto(0,380)
+    pen.goto(0,280)
     pen.write('The object of the game for the satelite to survive',font=('Yu Gothic UI Semibold', 18))
-    pen.goto(0,355)
+    pen.goto(0,255)
     pen.write('until the time runs out by dodging the missile and',font=('Yu Gothic UI Semibold', 18))
-    pen.goto(0,330)
+    pen.goto(0,230)
     pen.write('avoiding the astroids.',font=('Yu Gothic UI Semibold', 18))
-    pen.goto(0,270)
+    pen.goto(0,170)
     pen.write('OBJECT OF THE GAME: MISSILE',font=('Yu Gothic UI Semibold', 30))
-    pen.goto(0,240)
+    pen.goto(0,140)
     pen.write('The object of the game for the missile is to hit',font=('Yu Gothic UI Semibold', 18))
-    pen.goto(0,215)
+    pen.goto(0,115)
     pen.write('the satelite and avoid the astroids.',font=('Yu Gothic UI Semibold', 18))
     pen.goto(430,-430)
     pen.write('ESC; MAIN MENU',font=('Verdana', 25))
     turtle.tracer(1)
     pressed = False
     while not pressed:
+        screenTk.attributes("-fullscreen", True)
+        litterbox()
+        bledge.color(0,30,40)
+        tredge.color(0,30,40)
         if keyboard.is_pressed('esc') or (mouse.is_pressed('left') and is_within(725,-400,450,-425)):
             pressed = True
             reset()
@@ -218,6 +262,7 @@ def ask_mode():
     pressed = False
     t.sleep(.2)
     while not pressed:
+        screenTk.attributes("-fullscreen", True)
         if keyboard.is_pressed('1') or (mouse.is_pressed('left') and is_within(120,55,-120,25)):
             pen.clear()
             pressed = True
@@ -255,6 +300,7 @@ def ask_time():
     turtle.tracer(1)
     t.sleep(.2)
     while not pressed:
+        screenTk.attributes("-fullscreen", True)
         if keyboard.is_pressed('1') or (mouse.is_pressed('left') and is_within(0,55,-160,25)):
             pressed = True
             gtime = 10
@@ -309,6 +355,7 @@ def askplay():
     pressed = False
     t.sleep(.2)
     while not pressed:
+        screenTk.attributes("-fullscreen", True)
         if keyboard.is_pressed('1') or (mouse.is_pressed('left') and is_within(90,55,-90,25)):
             pen.clear()
             pressed = True
@@ -333,6 +380,7 @@ def start():
     targx=random.randint(-738,738)
     targy=random.randint(-450,450)
     run()
+
 def explode(target): #improve later
     playback.stop()
     turtle.tracer(1)
@@ -348,6 +396,8 @@ def explode(target): #improve later
     playback.load_file(mp3Path)
     playback.play()
     for i in range(25):
+        turtle.tracer(0)
+        t.sleep(.025)
         if i < 4:
             r -= 0
             g -= 8
@@ -382,7 +432,24 @@ def explode(target): #improve later
                 g = 0
             if b < 0:
                 b = 0
+        winwidth = turtle.window_width()
+        winheight = turtle.window_height()
+        if winwidth/winheight < 16/9:
+            y = (((winwidth/16)*9)/2)
+            bandheight = winheight / 2 - y
+            tredge.goto(0, winheight / 2 - bandheight / 2 )
+            bledge.goto(0, (winheight / 2 - bandheight / 2) * -1 )
+            tredge.shapesize(bandheight/20, winwidth/20)
+            bledge.shapesize(bandheight/20, winwidth/20)
+        if winwidth/winheight > 16/9:
+            x = (((winheight/9)*16)/2)
+            bandwidth = winwidth / 2 - x
+            tredge.goto(winwidth / 2 - bandwidth / 2, 0)
+            bledge.goto((winwidth / 2 - bandwidth / 2) * -1, 0)
+            tredge.shapesize( winheight/20,bandwidth/20)
+            bledge.shapesize( winheight/20,bandwidth/20)
         target.color(r, g, b)
+        turtle.tracer(1)
 def reset():
     turtle.tracer(0)
     global satdir
@@ -401,6 +468,7 @@ def reset():
     global misyvel
     global mode
     global astroids, astxy, astvel
+    screenTk.attributes("-fullscreen", True)
     turtle.tracer(0)
     screen.bgcolor('black')
     running=False
@@ -440,6 +508,8 @@ def reset():
     missile.shapesize(1,1)
     satflame.hideturtle()
     misflame.hideturtle()
+    bledge.hideturtle()
+    tredge.hideturtle()
     pen.clear()
     display.clear()
     turtle.tracer(1)
@@ -466,6 +536,7 @@ def run():
     global targy
     global astroids, astxy, astvel
     global swapped
+    screenTk.attributes("-fullscreen", True)
     if running:
         if keyboard.is_pressed('esc'):
             reset()
@@ -844,30 +915,31 @@ def run():
                     misrot += .3
                 elif not keyboard.is_pressed('d') and not keyboard.is_pressed('right') and misrot > 0:
                     misrot -= .5
-            if satx>738:
+            if satx>740:
                 satxvel=-2.5
                 satyvel=0
-            if satx<-738:
+            if satx<-740:
                 satxvel=2.5
                 satyvel=0
-            if saty>450:
+            if saty>400:
                 satxvel=0
                 satyvel=-2.5
-            if saty<-450:
+            if saty<-400:
                 satxvel=0
                 satyvel=2.5
-            if misx>738:
+            if misx>740:
                 misxvel=-2.5
                 misyvel=0
-            if misx<-738:
+            if misx<-740:
                 misxvel=2.5
                 misyvel=0
-            if misy>450:
+            if misy>400:
                 misxvel=0
                 misyvel=-2.5
-            if misy<-450:
+            if misy<-400:
                 misxvel=0
                 misyvel=2.5
+        litterbox()
         screen.tracer(1)
         screen.ontimer(run, 20)
 
