@@ -19,12 +19,10 @@ bledge = turtle.Turtle()
 bledge.penup()
 bledge.shape('square')
 bledge.speed(0)
-#bledge.hideturtle()
 tredge = turtle.Turtle()
 tredge.penup()
 tredge.shape('square')
 tredge.speed(0)
-#tredge.hideturtle()
 
 while True:
     winwidth = turtle.window_width()

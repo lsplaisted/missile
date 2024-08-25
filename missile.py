@@ -100,9 +100,9 @@ satyvel = 0
 misxvel = 0
 misyvel = 0
 satx = 0
-saty = 150#*scalefactor
+saty = 150
 misx = 0
-misy = -150#*scalefactor
+misy = -150
 mode = ''
 gtime = 20
 running = False
@@ -251,11 +251,10 @@ def controls():
     pen.write('ESC; MAIN MENU',font=('Verdana', round(25*scalefactor)))
     turtle.tracer(1)
     pressed = False
+    litterbox()
+    bledge.color(0,30,40)
+    tredge.color(0,30,40)
     while not pressed:
-        screenTk.attributes("-fullscreen", True)
-        litterbox()
-        bledge.color(0,30,40)
-        tredge.color(0,30,40)
         if keyboard.is_pressed('esc') or (mouse.is_pressed('left') and is_within(725*scalefactor,-400*scalefactor,450*scalefactor,-425*scalefactor)):
             pressed = True
             reset()
@@ -283,7 +282,6 @@ def ask_mode():
     pressed = False
     t.sleep(.2)
     while not pressed:
-        screenTk.attributes("-fullscreen", True)
         if keyboard.is_pressed('1') or (mouse.is_pressed('left') and is_within(120*scalefactor,55*scalefactor,-120*scalefactor,25*scalefactor)):
             pen.clear()
             pressed = True
@@ -321,7 +319,6 @@ def ask_time():
     turtle.tracer(1)
     t.sleep(.2)
     while not pressed:
-        screenTk.attributes("-fullscreen", True)
         if keyboard.is_pressed('1') or (mouse.is_pressed('left') and is_within(0*scalefactor,55*scalefactor,-160*scalefactor,25*scalefactor)):
             pressed = True
             gtime = 10
@@ -376,7 +373,6 @@ def askplay():
     pressed = False
     t.sleep(.2)
     while not pressed:
-        screenTk.attributes("-fullscreen", True)
         if keyboard.is_pressed('1') or (mouse.is_pressed('left') and is_within(90*scalefactor,55*scalefactor,-90*scalefactor,25*scalefactor)):
             pen.clear()
             pressed = True
@@ -402,7 +398,7 @@ def start():
     targy=random.randint(-450,450)
     run()
 
-def explode(target): #improve later
+def explode(target):
     playback.stop()
     turtle.tracer(1)
     circle_diameter = 1
