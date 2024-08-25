@@ -395,7 +395,7 @@ def start():
     global targy
     running=True
     targx=random.randint(-738,738)
-    targy=random.randint(-450,450)
+    targy=random.randint(0,450)
     run()
 
 def explode(target):
