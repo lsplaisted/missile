@@ -111,6 +111,7 @@ mistemp = 0
 astroids = []
 astxy = []
 astvel = []
+astroid = True
 swapped = False
 
 panel.goto(satx,saty)
@@ -240,13 +241,13 @@ def controls():
     pen.goto(0*scalefactor,255*scalefactor)
     pen.write('until the time runs out by dodging the missile and',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
     pen.goto(0*scalefactor,230*scalefactor)
-    pen.write('avoiding the astroids.',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
+    pen.write('avoiding the asteroids.',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
     pen.goto(0*scalefactor,170*scalefactor)
     pen.write('OBJECT OF THE GAME: MISSILE',font=('Yu Gothic UI Semibold', round(30*scalefactor)))
     pen.goto(0*scalefactor,140*scalefactor)
     pen.write('The object of the game for the missile is to hit',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
     pen.goto(0*scalefactor,115*scalefactor)
-    pen.write('the satelite and avoid the astroids.',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
+    pen.write('the satelite and avoid the asteroids.',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
     pen.goto(430*scalefactor,-430*scalefactor)
     pen.write('ESC; MAIN MENU',font=('Verdana', round(25*scalefactor)))
     turtle.tracer(1)
@@ -339,8 +340,42 @@ def ask_time():
             pressed = True
             if players == 1:
                 ask_mode()
-            if players == 2:
+            else:
                 askplay()
+    asktroid()
+            
+
+def asktroid():
+    global astroid
+    global players
+    pen.clear()
+    pen.goto(0*scalefactor,80*scalefactor)
+    pen.write('YES/NO ASTEROIDS',font=("Verdana",round(35*scalefactor)),align='center')
+    pen.goto(-80*scalefactor,30*scalefactor)
+    pen.write('1. YES',font=("Verdana",round(20*scalefactor)),align='left')
+    pen.goto(-80*scalefactor,0*scalefactor)
+    pen.write('2. NO',font=("Verdana",round(20*scalefactor)),align='left')
+    pen.goto(-80*scalefactor,-30*scalefactor)
+    pen.write('3. BACK',font=("Verdana",round(20*scalefactor)),align='left')
+    pressed = False
+    t.sleep(.2)
+    while not pressed:
+        if keyboard.is_pressed('1') or (mouse.is_pressed('left') and is_within(90*scalefactor,55*scalefactor,-90*scalefactor,25*scalefactor)):
+            pen.clear()
+            pressed = True
+            astroid = True
+        if keyboard.is_pressed('2') or (mouse.is_pressed('left') and is_within(90*scalefactor,25*scalefactor,-90*scalefactor,-5*scalefactor)):
+            pen.clear()
+            pressed = True
+            astroid = False
+        if keyboard.is_pressed('3') or (mouse.is_pressed('left') and is_within(90*scalefactor,-5*scalefactor,-90*scalefactor,-35*scalefactor)):
+            pen.clear()
+            pressed = True
+            askplay()
+            if players == 1:
+                ask_mode()
+            else:
+                ask_time()
     pen.clear()
     playback.stop()
     thisdir = os.path.dirname(os.path.abspath(__file__))
@@ -471,7 +506,7 @@ def reset():
     global misxvel
     global misyvel
     global mode
-    global astroids, astxy, astvel
+    global astroids, astxy, astvel, astroid
     screenTk.attributes("-fullscreen", True)
     turtle.tracer(0)
     screen.bgcolor('black')
@@ -498,6 +533,7 @@ def reset():
     astroids = []
     astxy = []
     astvel = []
+    astroid = True
     missile.goto(misx,misy)
     missile.right(missile.heading()-360)
     satilite.goto(satx,saty)
@@ -539,7 +575,7 @@ def run():
     global gtime
     global targx
     global targy
-    global astroids, astxy, astvel
+    global astroids, astxy, astvel, astroid
     global swapped
     screenTk.attributes("-fullscreen", True)
     if running:
@@ -613,7 +649,7 @@ def run():
                 astrng = 20
             elif gtime - time < 5:
                 astrng = 40
-            if random.randrange(1,round(gtime-time)+astrng) == 1:
+            if random.randrange(1,round(gtime-time)+astrng) == 1 and astroid:
                 side = random.randrange(1,5)
                 if side == 1:
                     astroids.append(turtle.Turtle())
