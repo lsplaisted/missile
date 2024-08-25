@@ -371,6 +371,8 @@ def askplay():
     pen.write('4. EXIT',font=("Verdana",round(20*scalefactor)),align='left')
     turtle.tracer(1)
     pressed = False
+    tredge.color(64,64,64)
+    bledge.color(64,64,64)
     t.sleep(.2)
     while not pressed:
         if keyboard.is_pressed('1') or (mouse.is_pressed('left') and is_within(90*scalefactor,55*scalefactor,-90*scalefactor,25*scalefactor)):
