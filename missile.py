@@ -696,10 +696,10 @@ def run():
                     astroids[ast].shape('circle')
                     astroids[ast].goto(astxy[ast])
             if len(astroids) > 0:
-                for astroid in range(len(astroids)):
-                    astxy[astroid][0] += astvel[astroid][0]
-                    astxy[astroid][1] += astvel[astroid][1]
-                    astroids[astroid].goto(astxy[astroid])
+                for astro in range(len(astroids)):
+                    astxy[astro][0] += astvel[astro][0]
+                    astxy[astro][1] += astvel[astro][1]
+                    astroids[astro].goto(astxy[astro])
             if players == 2:
                 if not swapped:
                     if keyboard.is_pressed('w'):
