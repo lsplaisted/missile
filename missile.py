@@ -235,6 +235,8 @@ def controls():
     pen.goto(-650*scalefactor,-50*scalefactor)
     pen.write('S+DOWN SWAP CONTROLS(ONLY WORKS ON CONTROLS SCREEN)',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
     pen.goto(0*scalefactor,310*scalefactor)
+    pen.goto(-650*scalefactor,-75*scalefactor)
+    pen.write('BOTH WASD/ARROW KEYS WORK IN SINGLEPLAYER',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
     pen.write('OBJECT OF THE GAME: SATELITE',font=('Yu Gothic UI Semibold', round(30*scalefactor)))
     pen.goto(0*scalefactor,280*scalefactor)
     pen.write('The object of the game for the satelite to survive',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
@@ -371,11 +373,7 @@ def asktroid():
         if keyboard.is_pressed('3') or (mouse.is_pressed('left') and is_within(90*scalefactor,-5*scalefactor,-90*scalefactor,-35*scalefactor)):
             pen.clear()
             pressed = True
-            askplay()
-            if players == 1:
-                ask_mode()
-            else:
-                ask_time()
+            ask_time()
     pen.clear()
     playback.stop()
     thisdir = os.path.dirname(os.path.abspath(__file__))
