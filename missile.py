@@ -299,6 +299,7 @@ def ask_mode():
             pen.clear()
             pressed = True
             askplay()
+    return
 
 def ask_time():
     global gtime
@@ -345,6 +346,7 @@ def ask_time():
             else:
                 askplay()
     asktroid()
+    return
             
 
 def asktroid():
@@ -423,7 +425,7 @@ def askplay():
             controls()
         if keyboard.is_pressed('4') or (mouse.is_pressed('left') and is_within(90*scalefactor,-35*scalefactor,-90*scalefactor,-65*scalefactor)):
             quit()
-
+    return
 def start():
     global running
     global targx
