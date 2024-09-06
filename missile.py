@@ -436,6 +436,7 @@ def start():
     run()
 
 def explode(target):
+    display.clear()
     playback.stop()
     turtle.tracer(1)
     circle_diameter = 1
