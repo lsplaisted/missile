@@ -299,7 +299,7 @@ def ask_mode():
             pen.clear()
             pressed = True
             askplay()
-    return
+            return
 
 def ask_time():
     global gtime
@@ -343,8 +343,10 @@ def ask_time():
             pressed = True
             if players == 1:
                 ask_mode()
+                return
             else:
                 askplay()
+                return
     asktroid()
     return
             
@@ -376,6 +378,7 @@ def asktroid():
             pen.clear()
             pressed = True
             ask_time()
+            return
     pen.clear()
     playback.stop()
     thisdir = os.path.dirname(os.path.abspath(__file__))
@@ -384,7 +387,6 @@ def asktroid():
     playback.play()
     playback.loop_at_end(True)
     start()
-    return
 
 def askplay():
     global players
@@ -425,7 +427,7 @@ def askplay():
             controls()
         if keyboard.is_pressed('4') or (mouse.is_pressed('left') and is_within(90*scalefactor,-35*scalefactor,-90*scalefactor,-65*scalefactor)):
             quit()
-    return
+            return
 def start():
     global running
     global targx
