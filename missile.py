@@ -406,6 +406,8 @@ def askplay():
     pen.write('3. CONTROLS',font=("Verdana",round(20*scalefactor)),align='left')
     pen.goto(-80*scalefactor,-60*scalefactor)
     pen.write('4. EXIT',font=("Verdana",round(20*scalefactor)),align='left')
+    pen.goto(670*scalefactor,-500*scalefactor)
+    pen.write('V 1.0.0',font=('Verdana', round(15*scalefactor)))
     turtle.tracer(1)
     pressed = False
     tredge.color(64,64,64)
