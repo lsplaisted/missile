@@ -122,7 +122,7 @@ timedisplay.hideturtle()
 timedisplay.penup()
 timedisplay.speed(0)
 timedisplay.color(255,255,255)
-timedisplay.goto(-1200*scalefactor,-825*scalefactor)
+timedisplay.goto(-1190*scalefactor,-825*scalefactor)
 
 no = turtle.Turtle()
 no.hideturtle()
@@ -422,6 +422,8 @@ def asktroid():
     pen.write('3. BACK',font=("Verdana",round(20*scalefactor)),align='left')
     if gtime<60:
         timedisplay.write(str(gtime)+'sec',font=("Verdana",round(15*scalefactor)),align='center')
+    else:
+        timedisplay.write('1MIN',font=("Verdana",round(15*scalefactor)),align='center')
     select4.hideturtle()
     no.hideturtle()
     pressed = False
@@ -471,7 +473,7 @@ def askplay():
     pen.goto(-80*scalefactor,-60*scalefactor)
     pen.write('4. EXIT',font=("Verdana",round(20*scalefactor)),align='left')
     pen.goto(670*scalefactor,-500*scalefactor)
-    pen.write('V 1.1.0',font=('Verdana', round(15*scalefactor)))
+    pen.write('V 1.1.1',font=('Verdana', round(15*scalefactor)))
     select1.hideturtle()
     no.hideturtle()
     select4.hideturtle()
