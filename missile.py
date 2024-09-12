@@ -9,7 +9,7 @@ winwidth = turtle.window_width()
 winheight = turtle.window_height()
 if winwidth/winheight < 16/9:
     scalefactor = winwidth/1536
-if winwidth/winheight > 16/9:
+if winwidth/winheight > 16/9:   
     scalefactor = winheight/960
 root.destroy()
 
@@ -90,6 +90,48 @@ display.color('white')
 display.speed(0)
 display.goto(-730*scalefactor,400*scalefactor)
 
+ast = ((10,0),(8,6),(6,8),(0,10),(-2.7,9.6),(-4,4),(-9.6,2.7),(-10,0),(-8,-6),(-6,-8),(0,-10),(6,-8),(8,-6))
+no = ((5,0),(15,-10),(10,-15),(0,-5),(-10,-15),(-15,-10),(-5,0),(-15,10),(-10,15),(0,5),(10,15),(15,10))
+screen.register_shape('ast',ast)
+screen.register_shape('no',no)
+
+select1 = turtle.Turtle()
+select1.hideturtle()
+select1.penup()
+select1.speed(0)
+select1.color(255,255,255)
+select1.goto(-1300*scalefactor,-800*scalefactor)
+
+select4 = turtle.Turtle()
+select4.hideturtle()
+select4.penup()
+select4.speed(0)
+select4.color(128,128,128)
+select4.shape('ast')
+select4.goto(-1100*scalefactor,-800*scalefactor)
+
+playdisplay = turtle.Turtle()
+playdisplay.hideturtle()
+playdisplay.penup()
+playdisplay.speed(0)
+playdisplay.color(255,255,255)
+playdisplay.goto(-1400*scalefactor,-825*scalefactor)
+
+timedisplay = turtle.Turtle()
+timedisplay.hideturtle()
+timedisplay.penup()
+timedisplay.speed(0)
+timedisplay.color(255,255,255)
+timedisplay.goto(-1200*scalefactor,-825*scalefactor)
+
+no = turtle.Turtle()
+no.hideturtle()
+no.penup()
+no.speed(0)
+no.color(128,0,0)
+no.shape('no')
+no.goto(-1100*scalefactor,-800*scalefactor)
+
 satdir = 0 
 satrot =0
 misdir = 0
@@ -156,7 +198,7 @@ litterbox()
 bledge.hideturtle()
 tredge.hideturtle()
 
-def scale(target):
+def scale(target,x=1,y=1):
     global height,width
     winwidth = turtle.window_width()
     winheight = turtle.window_height()
@@ -164,13 +206,15 @@ def scale(target):
         scalefactor = winwidth/1536
     if winwidth/winheight >= 16/9:
         scalefactor = winheight/960
-    target.shapesize(scalefactor,scalefactor)
+    target.shapesize(scalefactor*x,scalefactor*y)
 
 scale(missile)
 scale(satilite)
 scale(panel)
 scale(satflame)
 scale(misflame)
+scale(select4)
+scale(no)
 
 def showtime(rtime):
     global time
@@ -281,6 +325,8 @@ def ask_mode():
     pen.write('2. MISSILE MODE',font=("Verdana",round(20*scalefactor)),align='left')
     pen.goto(-120*scalefactor,-30*scalefactor)
     pen.write('3. BACK',font=("Verdana",round(20*scalefactor)),align='left')
+    select1.hideturtle()
+    playdisplay.write('1P',font=("Verdana",round(15*scalefactor)),align='center')
     turtle.tracer(1)
     pressed = False
     t.sleep(.2)
@@ -305,6 +351,7 @@ def ask_time():
     global gtime
     global players
     turtle.tracer(0)
+    timedisplay.clear()
     pen.goto(0*scalefactor,80*scalefactor)
     pen.write('SELECT GAME TIME',font=("Verdana",round(35*scalefactor)),align='center')
     pen.goto(-160*scalefactor,30*scalefactor)
@@ -319,7 +366,16 @@ def ask_time():
     pen.write('4. 45 SEC',font=("Verdana",round(20*scalefactor)),align='left')
     pen.goto(20*scalefactor,-30*scalefactor)
     pen.write('6. BACK',font=("Verdana",round(20*scalefactor)),align='left')
+    if players == 2:
+        playdisplay.write('2P',font=("Verdana",round(15*scalefactor)),align='center')
     pressed = False
+    if players == 1:
+        if mode == 'sat':
+            select1.shape('satilite')
+        if mode == 'mis':
+            select1.shape('missile')
+        scale(select1,.75,.75)
+        select1.showturtle()
     turtle.tracer(1)
     t.sleep(.2)
     while not pressed:
@@ -354,6 +410,7 @@ def ask_time():
 def asktroid():
     global astroid
     global players
+    turtle.tracer(0)
     pen.clear()
     pen.goto(0*scalefactor,80*scalefactor)
     pen.write('YES/NO ASTEROIDS',font=("Verdana",round(35*scalefactor)),align='center')
@@ -363,7 +420,12 @@ def asktroid():
     pen.write('2. NO',font=("Verdana",round(20*scalefactor)),align='left')
     pen.goto(-80*scalefactor,-30*scalefactor)
     pen.write('3. BACK',font=("Verdana",round(20*scalefactor)),align='left')
+    if gtime<60:
+        timedisplay.write(str(gtime)+'sec',font=("Verdana",round(15*scalefactor)),align='center')
+    select4.hideturtle()
+    no.hideturtle()
     pressed = False
+    turtle.tracer(1)
     t.sleep(.2)
     while not pressed:
         if keyboard.is_pressed('1') or (mouse.is_pressed('left') and is_within(90*scalefactor,55*scalefactor,-90*scalefactor,25*scalefactor)):
@@ -396,6 +458,8 @@ def askplay():
     playback.load_file(mp3Path)
     playback.play()
     playback.loop_at_end(True)
+    playdisplay.clear()
+    timedisplay.clear()
     pen.goto(0*scalefactor,80*scalefactor)
     pen.write('MISSILE',font=("Verdana",round(35*scalefactor)),align='center')
     pen.goto(-80*scalefactor,30*scalefactor)
@@ -407,7 +471,10 @@ def askplay():
     pen.goto(-80*scalefactor,-60*scalefactor)
     pen.write('4. EXIT',font=("Verdana",round(20*scalefactor)),align='left')
     pen.goto(670*scalefactor,-500*scalefactor)
-    pen.write('V 1.0.0',font=('Verdana', round(15*scalefactor)))
+    pen.write('V 1.1.0',font=('Verdana', round(15*scalefactor)))
+    select1.hideturtle()
+    no.hideturtle()
+    select4.hideturtle()
     turtle.tracer(1)
     pressed = False
     tredge.color(64,64,64)
@@ -434,6 +501,18 @@ def start():
     global running
     global targx
     global targy
+    global players
+    turtle.tracer(0)
+    #if players == 1:
+        #select4.goto(-1100*scalefactor,-800*scalefactor)
+        #no.goto(-1100*scalefactor,-800*scalefactor)
+    #if players == 2:
+        #select4.goto(-1200*scalefactor,-800*scalefactor)
+        #no.goto(-1200*scalefactor,-800*scalefactor)
+    if not astroid:
+        no.showturtle()
+    select4.showturtle()
+    turtle.tracer(1)
     running=True
     targx=random.randint(-738,738)
     targy=random.randint(0,450)
