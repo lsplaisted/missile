@@ -280,6 +280,8 @@ def controls():
     pen.write('S+DOWN SWAP CONTROLS(ONLY WORKS ON CONTROLS SCREEN)',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
     pen.goto(-650*scalefactor,-75*scalefactor)
     pen.write('BOTH WASD/ARROW KEYS WORK IN SINGLEPLAYER',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
+    pen.goto(-650*scalefactor,-100*scalefactor)
+    pen.write('Q AND /; PAUSE',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
     pen.goto(0*scalefactor,310*scalefactor)
     pen.write('OBJECT OF THE GAME: SATELITE',font=('Yu Gothic UI Semibold', round(30*scalefactor)))
     pen.goto(0*scalefactor,280*scalefactor)
