@@ -473,7 +473,7 @@ def askplay():
     pen.goto(-80*scalefactor,-60*scalefactor)
     pen.write('4. EXIT',font=("Verdana",round(20*scalefactor)),align='left')
     pen.goto(670*scalefactor,-500*scalefactor)
-    pen.write('V 1.1.1',font=('Verdana', round(15*scalefactor)))
+    pen.write('V 1.2.0',font=('Verdana', round(15*scalefactor)))
     select1.hideturtle()
     no.hideturtle()
     select4.hideturtle()
@@ -642,6 +642,35 @@ def reset():
     turtle.tracer(1)
     askplay()
 
+def pause(player):
+    global running, players
+    running = False
+    pressed = False
+    pen.goto(0,100*scalefactor)
+    pen.write('PAUSED',font=('Verdana',round(40*scalefactor)), align=('center'))
+    if player == 1 and players != 1:
+        pen.goto(0,80*scalefactor)
+        pen.write('P1',font=('Verdana',round(20*scalefactor)), align=('center'))
+    if player == 2 and players != 1:
+        pen.goto(0,80*scalefactor)
+        pen.write('P2',font=('Verdana',round(20*scalefactor)), align=('center'))
+    t.sleep(.2)
+    while not pressed:
+        if players == 1:
+            if keyboard.is_pressed('q') or keyboard.is_pressed('/'):
+                running = True
+                pressed = True
+                return
+        else:
+            if keyboard.is_pressed('q') and player == 1:
+                running = True
+                pressed = True
+                return
+            if keyboard.is_pressed('/') and player == 2:
+                running = True
+                pressed = True
+                return
+            
 def run():
     global satdir
     global misdir
@@ -668,6 +697,14 @@ def run():
         if keyboard.is_pressed('esc'):
             reset()
             return
+        if keyboard.is_pressed('q'):
+            pause(1)
+            t.sleep(.2)
+            pen.clear()
+        if keyboard.is_pressed('/'):
+            pause(2)
+            t.sleep(.2)
+            pen.clear()
         screen.tracer(0)
         time += .025
         if time >=- .1 and time <= .1:
