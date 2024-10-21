@@ -38,6 +38,15 @@ misflame.color(255,193,7)
 misflame.goto(0,-150)
 misflame.hideturtle()
 
+lazer = turtle.Turtle()
+lazer.penup()
+lazer.shape('circle')
+lazer.speed(0)
+lazer.color(128,0,0)
+lazer.hideturtle()
+lazercd = 0
+showlaz = 0
+
 sp=((30,8),(-30,8),(-30,-8),(30,-8))
 screen.register_shape('panel',sp)
 panel=turtle.Turtle()
@@ -63,6 +72,9 @@ satflame.speed(0)
 satflame.color(255,193,7)
 satflame.goto(0,150)
 satflame.hideturtle()
+fried = 0
+defence = 0
+dcd=0
 
 pen=turtle.Turtle()
 pen.hideturtle()
@@ -148,8 +160,8 @@ misy = -150
 mode = ''
 gtime = 20
 running = False
-sattemp = 0
-mistemp = 0
+satfuel = 100
+misfuel = 100
 astroids = []
 astxy = []
 astvel = []
@@ -215,6 +227,7 @@ scale(satflame)
 scale(misflame)
 scale(select4)
 scale(no)
+scale(lazer)
 
 def showtime(rtime):
     global time
@@ -245,14 +258,18 @@ def controls():
         pen.write('A/D; ROTATE',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
         pen.goto(-650*scalefactor,230*scalefactor)
         pen.write('S+A/S+D; ACCELERATE SIDEWAYS',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
-        pen.goto(-650*scalefactor,170*scalefactor)
+        pen.goto(-650*scalefactor,205*scalefactor)
+        pen.write('S; DEFEND',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
+        pen.goto(-650*scalefactor,155*scalefactor)
         pen.write('MISSILE CONTROLS:',font=('Yu Gothic UI Semibold', round(30*scalefactor)))
-        pen.goto(-650*scalefactor,140*scalefactor)
+        pen.goto(-650*scalefactor,130*scalefactor)
         pen.write('UP ACCELERATE',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
-        pen.goto(-650*scalefactor,115*scalefactor)
+        pen.goto(-650*scalefactor,105*scalefactor)
         pen.write('LEFT/RIGHT; ROTATE',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
-        pen.goto(-650*scalefactor,90*scalefactor)
+        pen.goto(-650*scalefactor,80*scalefactor)
         pen.write('DOWN+LEFT/DOWN+RIGHT; ACCELERATE SIDEWAYS',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
+        pen.goto(-650*scalefactor,55*scalefactor)
+        pen.write('DOWN; LAZER',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
     else:
         pen.goto(-650*scalefactor,310*scalefactor)
         pen.write('SATELITE CONTROLS:',font=('Yu Gothic UI Semibold', round(30*scalefactor)))
@@ -262,26 +279,30 @@ def controls():
         pen.write('LEFT/RIGHT; ROTATE',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
         pen.goto(-650*scalefactor,230*scalefactor)
         pen.write('DOWN+LEFT/DOWN+RIGHT; ACCELERATE SIDEWAYS',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
-        pen.goto(-650*scalefactor,170*scalefactor)
+        pen.goto(-650*scalefactor,205*scalefactor)
+        pen.write('DOWN; DEFEND',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
+        pen.goto(-650*scalefactor,155*scalefactor)
         pen.write('MISSILE CONTROLS:',font=('Yu Gothic UI Semibold', round(30*scalefactor)))
-        pen.goto(-650*scalefactor,140*scalefactor)
+        pen.goto(-650*scalefactor,130*scalefactor)
         pen.write('W ACCELERATE',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
-        pen.goto(-650*scalefactor,115*scalefactor)
+        pen.goto(-650*scalefactor,105*scalefactor)
         pen.write('D/A; ROTATE',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
-        pen.goto(-650*scalefactor,90*scalefactor)
+        pen.goto(-650*scalefactor,80*scalefactor)
         pen.write('S+A/S+D; ACCELERATE SIDEWAYS',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
-    pen.goto(-650*scalefactor,30*scalefactor)
-    pen.write('OTHER CONTROLS:',font=('Yu Gothic UI Semibold', round(30*scalefactor)))
+        pen.goto(-650*scalefactor,55*scalefactor)
+        pen.write('S; LAZER',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
     pen.goto(-650*scalefactor,0*scalefactor)
+    pen.write('OTHER CONTROLS:',font=('Yu Gothic UI Semibold', round(30*scalefactor)))
+    pen.goto(-650*scalefactor,-20*scalefactor)
     pen.write('NUMBER KEYS/CLICKING; SELECTING OPTIONS',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
-    pen.goto(-650*scalefactor,-25*scalefactor)
+    pen.goto(-650*scalefactor,-45*scalefactor)
     pen.write('ESC; QUIT WHILE PLAYING',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
-    pen.goto(-650*scalefactor,-50*scalefactor)
-    pen.write('S+DOWN SWAP CONTROLS(ONLY WORKS ON CONTROLS SCREEN)',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
-    pen.goto(-650*scalefactor,-75*scalefactor)
+    pen.goto(-650*scalefactor,-70*scalefactor)
+    pen.write('S+DOWN; SWAP CONTROLS(ONLY WORKS ON CONTROLS SCREEN)',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
+    pen.goto(-650*scalefactor,-95*scalefactor)
     pen.write('BOTH WASD/ARROW KEYS WORK IN SINGLEPLAYER',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
-    pen.goto(-650*scalefactor,-100*scalefactor)
-    pen.write('Q AND /; PAUSE',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
+    pen.goto(-650*scalefactor,-120*scalefactor)
+    pen.write('Q OR /; PAUSE',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
     pen.goto(0*scalefactor,310*scalefactor)
     pen.write('OBJECT OF THE GAME: SATELITE',font=('Yu Gothic UI Semibold', round(30*scalefactor)))
     pen.goto(0*scalefactor,280*scalefactor)
@@ -475,7 +496,7 @@ def askplay():
     pen.goto(-80*scalefactor,-60*scalefactor)
     pen.write('4. EXIT',font=("Verdana",round(20*scalefactor)),align='left')
     pen.goto(670*scalefactor,-500*scalefactor)
-    pen.write('V 1.2.0',font=('Verdana', round(15*scalefactor)))
+    pen.write('V 1.3.0',font=('Verdana', round(15*scalefactor)))
     select1.hideturtle()
     no.hideturtle()
     select4.hideturtle()
@@ -579,22 +600,16 @@ def explode(target):
         turtle.tracer(1)
 def reset():
     turtle.tracer(0)
-    global satdir
-    global misdir
+    global satdir, misdir
     global running
-    global satrot
-    global misrot
+    global satrot, misrot
     global time, gtime
-    global satx
-    global saty
-    global misx
-    global misy
-    global satxvel
-    global satyvel
-    global misxvel
-    global misyvel
+    global satx, saty, misx, misy
+    global satxvel, satyvel, misxvel, misyvel 
     global mode
     global astroids, astxy, astvel, astroid
+    global satfuel, misfuel
+    global showlaz, lazercd, fried, defence, dcd
     screenTk.attributes("-fullscreen", True)
     turtle.tracer(0)
     screen.bgcolor('black')
@@ -616,6 +631,8 @@ def reset():
     misy=-150
     mode=''
     gtime=20
+    misfuel = 100
+    satfuel = 100
     for astriod in astroids:
         astriod.hideturtle()
     astroids = []
@@ -633,6 +650,13 @@ def reset():
     satilite.color(255, 215, 0)
     missile.color('white')
     missile.shape('missile')
+    lazercd = 0
+    lazer.hideturtle()
+    lazer.clear()
+    lazer.penup()
+    fried=0
+    defence=0
+    dcd=0
     scale(missile)
     scale(satilite)
     satflame.hideturtle()
@@ -684,16 +708,14 @@ def run():
     global saty
     global misx
     global misy
-    global satxvel
-    global satyvel
-    global misxvel
-    global misyvel
+    global satxvel, satyvel, misxvel, misyvel
     global mode
     global gtime
     global targx
     global targy
     global astroids, astxy, astvel, astroid
     global swapped
+    global lazercd, showlaz, fried, defence, dcd
     screenTk.attributes("-fullscreen", True)
     if running:
         if keyboard.is_pressed('esc'):
@@ -709,6 +731,27 @@ def run():
             pen.clear()
         screen.tracer(0)
         time += .025
+        lazercd-=.025
+        showlaz-=.025
+        fried-=.025
+        defence-=.025
+        dcd-=.025
+        if lazercd < 0:
+            lazercd = 0
+        if showlaz < 0:
+            showlaz = 0
+            lazer.hideturtle()
+            lazer.clear()
+        if fried < 0:
+            fried = 0
+            if defence <= 0:
+                satilite.color(255, 215, 0)
+        if defence<0:
+            defence = 0
+        if dcd<0:
+            dcd=0
+            if fried <= 0:
+                satilite.color(255, 215, 0)
         if time >=- .1 and time <= .1:
             showtime("GO!")
         elif time %1 <= .1 and time %1 >=- .1 and time > 0:
@@ -751,7 +794,7 @@ def run():
                 reset()
                 return
             for pos in astxy:
-                if (pos[0] <= satx + 30*scalefactor and pos[0] >= satx - 30*scalefactor) and (pos[1] <= saty + 30*scalefactor and pos[1] >= saty - 30*scalefactor):
+                if (pos[0] <= satx + 30*scalefactor and pos[0] >= satx - 30*scalefactor) and (pos[1] <= saty + 30*scalefactor and pos[1] >= saty - 30*scalefactor) and defence == 0:
                     explode(satilite)
                     pen.goto(0,0)
                     display.clear()
@@ -825,9 +868,19 @@ def run():
                     astxy[astro][0] += astvel[astro][0]
                     astxy[astro][1] += astvel[astro][1]
                     astroids[astro].goto(astxy[astro])
+            if satx-misx != 0:
+                mistar=math.degrees(math.atan((saty-misy)/(satx-misx)))
+                if misx-satx>0:
+                    mistar += 180
+            elif satx-misx==0 and saty-misy>0:
+                mistar=90
+            elif satx-misx==0 and saty-misy<0:
+                mistar=270
+            if mistar<0:
+                mistar+=360
             if players == 2:
                 if not swapped:
-                    if keyboard.is_pressed('w'):
+                    if keyboard.is_pressed('w') and fried ==0:
                         satyvel+=(math.sin(math.radians(satdir)))/6
                         satxvel+=(math.cos(math.radians(satdir)))/6
                         satflame.goto(satx,saty)
@@ -835,20 +888,28 @@ def run():
                         satflame.showturtle()
                     else:
                         satflame.hideturtle()
-                    if keyboard.is_pressed('a+s'):
+                    if keyboard.is_pressed('a+s') and fried ==0:
                         satyvel+=(math.sin(math.radians(satdir+90)))/15
                         misxvel+=(math.cos(math.radians(satdir+90)))/15
-                    elif keyboard.is_pressed('d+s'):
+                    elif keyboard.is_pressed('d+s') and fried ==0:
                         satyvel+=(math.sin(math.radians(satdir-90)))/15
                         satxvel+=(math.cos(math.radians(satdir-90)))/15
-                    elif keyboard.is_pressed('a'):
+                    elif keyboard.is_pressed('a') and fried ==0:
                         satrot -= .2
-                    elif not keyboard.is_pressed('a') and satrot < 0:
+                    elif not keyboard.is_pressed('a') and satrot < 0 and fried ==0:
                         satrot += .4
-                    elif keyboard.is_pressed('d'):
+                        if satrot > 0:
+                            satrot = 0
+                    elif keyboard.is_pressed('d') and not fried:
                         satrot += .2
-                    elif not keyboard.is_pressed('d') and satrot > 0:
+                    elif not keyboard.is_pressed('d') and satrot > 0 and fried ==0:
                         satrot -= .4
+                        if satrot < 0:
+                            satrot = 0
+                    if keyboard.is_pressed('s') and fried == 0 and dcd ==0:
+                        defence = 3
+                        dcd = 5
+                        satilite.color(0,30,40)
                     if keyboard.is_pressed('up'):
                         misyvel+=(math.sin(math.radians(misdir)))/5
                         misxvel+=(math.cos(math.radians(misdir)))/5
@@ -867,12 +928,32 @@ def run():
                         misrot -= .2
                     elif not keyboard.is_pressed('left') and misrot < 0:
                         misrot += .4
+                        if misrot > 0:
+                            misrot = 0
                     elif keyboard.is_pressed('right'):
                         misrot += .2
                     elif not keyboard.is_pressed('right') and misrot > 0:
                         misrot -= .4
+                        if misrot < 0:
+                            misrot = 0
+                    if keyboard.is_pressed('down') and lazercd == 0:
+                        lazercd = 5
+                        lazer.goto(misx,misy)
+                        lazer.pendown()
+                        lazer.setheading(misdir)
+                        if mistar-misdir <= 15 and mistar-misdir >= -15 and defence == 0 and defence == 0:
+                            lazer.goto(satx,saty)
+                            fried = 3
+                            satilite.color(100,100,100)
+                        elif mistar-misdir <= 15 and mistar-misdir >= -15 and defence == 0 and defence > 0:
+                            lazer.goto(satx,saty)
+                        else:
+                            lazer.forward(2000*scalefactor)
+                        lazer.showturtle()
+                        lazer.penup()
+                        showlaz = 1
                 else:
-                    if keyboard.is_pressed('up'):
+                    if keyboard.is_pressed('up') and fried ==0:
                         satyvel+=(math.sin(math.radians(satdir)))/6
                         satxvel+=(math.cos(math.radians(satdir)))/6
                         satflame.goto(satx,saty)
@@ -880,20 +961,28 @@ def run():
                         satflame.showturtle()
                     else:
                         satflame.hideturtle()
-                    if keyboard.is_pressed('left+down'):
-                        satyvel+=(math.sin(math.radians(satdir+90)))/15
-                        misxvel+=(math.cos(math.radians(satdir+90)))/15
-                    elif keyboard.is_pressed('right+down'):
-                        satyvel+=(math.sin(math.radians(satdir-90)))/15
-                        satxvel+=(math.cos(math.radians(satdir-90)))/15
-                    elif keyboard.is_pressed('left'):
+                    if keyboard.is_pressed('left+down') and fried ==0:
+                        satyvel+=(math.sin(math.radians(satdir+90)))/10
+                        misxvel+=(math.cos(math.radians(satdir+90)))/10
+                    elif keyboard.is_pressed('right+down') and fried ==0:
+                        satyvel+=(math.sin(math.radians(satdir-90)))/10
+                        satxvel+=(math.cos(math.radians(satdir-90)))/10
+                    elif keyboard.is_pressed('left') and fried ==0:
                         satrot -= .2
-                    elif not keyboard.is_pressed('left') and satrot < 0:
+                    elif not keyboard.is_pressed('left') and satrot < 0 and fried ==0:
                         satrot += .4
-                    elif keyboard.is_pressed('right'):
+                        if satrot > 0:
+                            satrot = 0
+                    elif keyboard.is_pressed('right') and fried ==0:
                         satrot += .2
-                    elif not keyboard.is_pressed('right') and satrot > 0:
+                    elif not keyboard.is_pressed('right') and satrot > 0 and fried ==0:
                         satrot -= .4
+                        if satrot < 0:
+                            satrot = 0
+                    if keyboard.is_pressed('down') and fried == 0 and dcd ==0:
+                        defence = 3
+                        dcd = 5
+                        satilite.color(0,30,40)
                     if keyboard.is_pressed('w'):
                         misyvel+=(math.sin(math.radians(misdir)))/5
                         misxvel+=(math.cos(math.radians(misdir)))/5
@@ -903,19 +992,40 @@ def run():
                     else:
                         misflame.hideturtle()
                     if keyboard.is_pressed('a+s'):
-                        misyvel+=(math.sin(math.radians(misdir+90)))/15
-                        misxvel+=(math.cos(math.radians(misdir+90)))/15
+                        misyvel+=(math.sin(math.radians(misdir+90)))/10
+                        misxvel+=(math.cos(math.radians(misdir+90)))/10
                     elif keyboard.is_pressed('d+s'):
-                        misyvel+=(math.sin(math.radians(misdir-90)))/15
-                        misxvel+=(math.cos(math.radians(misdir-90)))/15
+                        misyvel+=(math.sin(math.radians(misdir-90)))/10
+                        misxvel+=(math.cos(math.radians(misdir-90)))/10
                     elif keyboard.is_pressed('a'):
                         misrot -= .2
                     elif not keyboard.is_pressed('a') and misrot < 0:
                         misrot += .4
+                        if misrot > 0:
+                            misrot = 0
                     elif keyboard.is_pressed('d'):
                         misrot += .2
                     elif not keyboard.is_pressed('d') and misrot > 0:
                         misrot -= .4
+                        if misrot < 0:
+                            misrot = 0
+                    if keyboard.is_pressed('s') and lazercd == 0:
+                        lazercd = 5
+                        lazer.goto(misx,misy)
+                        lazer.pendown()
+                        lazer.setheading(misdir)
+                        if mistar-misdir <= 15 and mistar-misdir >= -15 and defence == 0:
+                            lazer.goto(satx,saty)
+                            fried = 3
+                            satilite.color(100,100,100)
+                        elif mistar-misdir <= 15 and mistar-misdir >= -15 and defence == 0 and defence > 0:
+                            lazer.goto(satx,saty)
+                        else:
+                            lazer.forward(2000*scalefactor)
+                        lazer.showturtle()
+                        lazer.penup()
+                        showlaz = 1
+
             if mode == 'sat':
                 col = False
                 for ast in range(len(astroids)):
@@ -961,13 +1071,13 @@ def run():
                         misrot += .6
                 else:
                     misrot = 0
-                if mistar-misdir<=45 and mistar-misdir>=-45 and not col:
+                if mistar-misdir<=20 and mistar-misdir>=-20 and not col:
                     misyvel+=(math.sin(math.radians(misdir)))/5
                     misxvel+=(math.cos(math.radians(misdir)))/5
                     misflame.goto(misx,misy)
                     misflame.setheading(misdir)
                     misflame.showturtle()
-                elif mistar-misdir<=90 and mistar-misdir>=-45:
+                elif mistar-misdir<=90 and mistar-misdir>=-20:
                     misyvel+=(math.sin(math.radians(misdir)))/5
                     misxvel+=(math.cos(math.radians(misdir)))/5
                     misflame.goto(misx,misy)
@@ -975,7 +1085,35 @@ def run():
                     misflame.showturtle()
                 else:
                     misflame.hideturtle()
-                if keyboard.is_pressed('w') or keyboard.is_pressed('up'):
+                if mistar-misdir<=110 and mistar-misdir>=60 and not col:
+                    misyvel+=(math.sin(math.radians(misdir+90)))/10
+                    misxvel+=(math.cos(math.radians(misdir+90)))/10
+                    misflame.goto(misx,misy)
+                    misflame.setheading(misdir)
+                    misflame.showturtle()
+                if mistar-misdir<=290 and mistar-misdir>=250 and not col:
+                    misyvel+=(math.sin(math.radians(misdir+90)))/10
+                    misxvel+=(math.cos(math.radians(misdir+90)))/10
+                    misflame.goto(misx,misy)
+                    misflame.setheading(misdir)
+                    misflame.showturtle()
+                
+                if mistar-misdir <= 17 and mistar-misdir >= -17 and lazercd == 0:
+                        lazercd = 5
+                        lazer.goto(misx,misy)
+                        lazer.pendown()
+                        lazer.setheading(misdir)
+                        if mistar-misdir <= 15 and mistar-misdir >= -15 and defence == 0:
+                            lazer.goto(satx,saty)
+                            fried = 3
+                            satilite.color(100,100,100)
+                        else:
+                            lazer.forward(2000*scalefactor)
+                        lazer.showturtle()
+                        lazer.penup()
+                        showlaz = 1
+                
+                if (keyboard.is_pressed('w') or keyboard.is_pressed('up')) and fried == 0:
                     satyvel+=(math.sin(math.radians(satdir)))/6
                     satxvel+=(math.cos(math.radians(satdir)))/6
                     satflame.goto(satx,saty)
@@ -983,20 +1121,28 @@ def run():
                     satflame.showturtle()
                 else:
                     satflame.hideturtle()
-                if keyboard.is_pressed('a+s') or keyboard.is_pressed('left+down'):
-                    satyvel+=(math.sin(math.radians(satdir+90)))/15
-                    satxvel+=(math.cos(math.radians(satdir+90)))/15
-                elif keyboard.is_pressed('d+s') or keyboard.is_pressed('right+down'):
-                    satyvel+=(math.sin(math.radians(satdir-90)))/15
-                    satxvel+=(math.cos(math.radians(satdir-90)))/15
-                elif keyboard.is_pressed('a') or keyboard.is_pressed('left'):
+                if (keyboard.is_pressed('a+s') or keyboard.is_pressed('left+down')) and fried == 0:
+                    satyvel+=(math.sin(math.radians(satdir+90)))/10
+                    satxvel+=(math.cos(math.radians(satdir+90)))/10
+                elif (keyboard.is_pressed('d+s') or keyboard.is_pressed('right+down')) and fried == 0:
+                    satyvel+=(math.sin(math.radians(satdir-90)))/10
+                    satxvel+=(math.cos(math.radians(satdir-90)))/10
+                elif (keyboard.is_pressed('a') or keyboard.is_pressed('left')) and fried == 0:
                     satrot -= .2
-                elif not keyboard.is_pressed('a') and not keyboard.is_pressed('left') and satrot < 0:
+                elif not keyboard.is_pressed('a') and not keyboard.is_pressed('left') and satrot < 0 and fried == 0:
                     satrot += .4
-                elif keyboard.is_pressed('d') or keyboard.is_pressed('right'):
+                    if satrot > 0:
+                            satrot = 0
+                elif (keyboard.is_pressed('d') or keyboard.is_pressed('right')) and fried == 0:
                     satrot += .2
-                elif not keyboard.is_pressed('d') and not keyboard.is_pressed('right') and satrot > 0:
+                elif not keyboard.is_pressed('d') and not keyboard.is_pressed('right') and satrot > 0 and fried == 0:
                     satrot -= .4
+                    if satrot < 0:
+                            satrot = 0
+                if keyboard.is_pressed('s') or keyboard.is_pressed('down') and fried == 0 and dcd ==0:
+                        defence = 3
+                        dcd = 5
+                        satilite.color(0,30,40)
             elif mode == 'mis':
                 col = False
                 if (targx-satx<25 and targx-satx>25) and (targy-saty<25 and targy-saty>25):
@@ -1018,6 +1164,10 @@ def run():
                                 satar = satilite.towards(astroids[ast])+90
                                 if satx-targx>0:
                                     satar += 180
+                                    if fried == 0 and dcd ==0:
+                                        defence = 3
+                                        dcd = 5
+                                        satilite.color(0,30,40)
                 if targx-satx!=0 and not col:
                     satar=math.degrees(math.atan((targy-saty)/(targx-satx)))
                     if satx-targx>0:
@@ -1031,9 +1181,9 @@ def run():
 
                 target_change = satar - satdir
                 target_change = target_change % 360
-                if target_change > 180:
+                if target_change > 180 and not fried:
                     target_change = target_change - 360
-                if target_change > 5:
+                if target_change > 5 and not fried:
                     if satrot > -9 and not col:
                         satrot -= .2
                     else:
@@ -1043,15 +1193,15 @@ def run():
                         satrot += .2
                     else: 
                         satrot += .6
-                else:
+                elif not fried:
                     satrot = 0
-                if satar-satdir<=45 and satar-satdir>=-45 and not col:
+                if satar-satdir<=45 and satar-satdir>=-45 and not col and not fried:
                     satyvel+=(math.sin(math.radians(satdir)))/6
                     satxvel+=(math.cos(math.radians(satdir)))/6
                     satflame.goto(satx,saty)
                     satflame.setheading(satdir)
                     satflame.showturtle()
-                elif satar-satdir<=90 and satar-satdir>=-45:
+                elif satar-satdir<=90 and satar-satdir>=-45 and not fried:
                     satyvel+=(math.sin(math.radians(satdir)))/6
                     satxvel+=(math.cos(math.radians(satdir)))/6
                     satflame.goto(satx,saty)
@@ -1068,19 +1218,38 @@ def run():
                 else:
                     misflame.hideturtle()
                 if keyboard.is_pressed('a+s') or keyboard.is_pressed('left+down'):
-                    misyvel+=(math.sin(math.radians(misdir+90)))/15
-                    misxvel+=(math.cos(math.radians(misdir+90)))/15
+                    misyvel+=(math.sin(math.radians(misdir+90)))/10
+                    misxvel+=(math.cos(math.radians(misdir+90)))/10
                 elif keyboard.is_pressed('d+s') or keyboard.is_pressed('right+down'):
-                    misyvel+=(math.sin(math.radians(misdir-90)))/15
-                    misxvel+=(math.cos(math.radians(misdir-90)))/15
+                    misyvel+=(math.sin(math.radians(misdir-90)))/10
+                    misxvel+=(math.cos(math.radians(misdir-90)))/10
                 elif keyboard.is_pressed('a') or keyboard.is_pressed('left'):
                     misrot -= .3
                 elif not keyboard.is_pressed('a') and not keyboard.is_pressed('left') and misrot < 0:
                     misrot += .5
+                    if misrot > 0:
+                            misrot = 0
                 elif keyboard.is_pressed('d') or keyboard.is_pressed('right'):
                     misrot += .3
                 elif not keyboard.is_pressed('d') and not keyboard.is_pressed('right') and misrot > 0:
                     misrot -= .5
+                    if misrot < 0:
+                            misrot = 0
+                if (keyboard.is_pressed('s') or keyboard.is_pressed('down')) and lazercd == 0:
+                        lazercd = 5
+                        lazer.goto(misx,misy)
+                        lazer.pendown()
+                        lazer.setheading(misdir)
+                        if mistar-misdir <= 15 and mistar-misdir >= -15 and defence == 0:
+                            lazer.goto(satx,saty)
+                            fried = 3
+                            satilite.color(100,100,100)
+                        else:
+                            lazer.forward(2000*scalefactor)
+                        lazer.showturtle()
+                        lazer.penup()
+                        showlaz = 1
+                
             if satx>740*scalefactor:
                 satxvel=-2.5*scalefactor
                 satyvel=0
