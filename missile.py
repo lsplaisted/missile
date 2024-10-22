@@ -496,7 +496,7 @@ def askplay():
     pen.goto(-80*scalefactor,-60*scalefactor)
     pen.write('4. EXIT',font=("Verdana",round(20*scalefactor)),align='left')
     pen.goto(670*scalefactor,-500*scalefactor)
-    pen.write('V 1.3.0',font=('Verdana', round(15*scalefactor)))
+    pen.write('V 1.3.1',font=('Verdana', round(15*scalefactor)))
     select1.hideturtle()
     no.hideturtle()
     select4.hideturtle()
