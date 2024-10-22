@@ -1139,7 +1139,7 @@ def run():
                     satrot -= .4
                     if satrot < 0:
                             satrot = 0
-                if keyboard.is_pressed('s') or keyboard.is_pressed('down') and fried == 0 and dcd ==0:
+                if (keyboard.is_pressed('s') or keyboard.is_pressed('down')) and fried == 0 and dcd ==0:
                         defence = 3
                         dcd = 5
                         satilite.color(0,30,40)
