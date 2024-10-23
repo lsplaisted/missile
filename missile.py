@@ -2,6 +2,7 @@ import turtle, math, time as t, random, keyboard, mouse, tkinter, os
 from just_playback import Playback
 playback = Playback()
 root = tkinter.Tk()
+version = 'V1.3.2'
 
 width = root.winfo_screenwidth()
 height = root.winfo_screenheight()
@@ -259,7 +260,7 @@ def controls():
         pen.goto(-650*scalefactor,230*scalefactor)
         pen.write('S+A/S+D; ACCELERATE SIDEWAYS',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
         pen.goto(-650*scalefactor,205*scalefactor)
-        pen.write('S; DEFEND',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
+        pen.write('S; ACTIVATE DEFENSE',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
         pen.goto(-650*scalefactor,155*scalefactor)
         pen.write('MISSILE CONTROLS:',font=('Yu Gothic UI Semibold', round(30*scalefactor)))
         pen.goto(-650*scalefactor,130*scalefactor)
@@ -269,7 +270,7 @@ def controls():
         pen.goto(-650*scalefactor,80*scalefactor)
         pen.write('DOWN+LEFT/DOWN+RIGHT; ACCELERATE SIDEWAYS',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
         pen.goto(-650*scalefactor,55*scalefactor)
-        pen.write('DOWN; LAZER',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
+        pen.write('DOWN; SHOOT LASER',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
     else:
         pen.goto(-650*scalefactor,310*scalefactor)
         pen.write('SATELITE CONTROLS:',font=('Yu Gothic UI Semibold', round(30*scalefactor)))
@@ -280,7 +281,7 @@ def controls():
         pen.goto(-650*scalefactor,230*scalefactor)
         pen.write('DOWN+LEFT/DOWN+RIGHT; ACCELERATE SIDEWAYS',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
         pen.goto(-650*scalefactor,205*scalefactor)
-        pen.write('DOWN; DEFEND',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
+        pen.write('DOWN; ACTIVATE DEFENSE',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
         pen.goto(-650*scalefactor,155*scalefactor)
         pen.write('MISSILE CONTROLS:',font=('Yu Gothic UI Semibold', round(30*scalefactor)))
         pen.goto(-650*scalefactor,130*scalefactor)
@@ -290,7 +291,7 @@ def controls():
         pen.goto(-650*scalefactor,80*scalefactor)
         pen.write('S+A/S+D; ACCELERATE SIDEWAYS',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
         pen.goto(-650*scalefactor,55*scalefactor)
-        pen.write('S; LAZER',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
+        pen.write('S; SHOOT LASER',font=('Yu Gothic UI Semibold', round(18*scalefactor)))
     pen.goto(-650*scalefactor,0*scalefactor)
     pen.write('OTHER CONTROLS:',font=('Yu Gothic UI Semibold', round(30*scalefactor)))
     pen.goto(-650*scalefactor,-20*scalefactor)
@@ -476,7 +477,7 @@ def asktroid():
     start()
 
 def askplay():
-    global players
+    global players, version
     turtle.tracer(0)
     thisdir = os.path.dirname(os.path.abspath(__file__))
     mp3Path = os.path.join(thisdir, 'menu_song.mp3')
@@ -496,7 +497,7 @@ def askplay():
     pen.goto(-80*scalefactor,-60*scalefactor)
     pen.write('4. EXIT',font=("Verdana",round(20*scalefactor)),align='left')
     pen.goto(670*scalefactor,-500*scalefactor)
-    pen.write('V 1.3.1',font=('Verdana', round(15*scalefactor)))
+    pen.write(version,font=('Verdana', round(15*scalefactor)))
     select1.hideturtle()
     no.hideturtle()
     select4.hideturtle()
@@ -528,12 +529,6 @@ def start():
     global targy
     global players
     turtle.tracer(0)
-    #if players == 1:
-        #select4.goto(-1100*scalefactor,-800*scalefactor)
-        #no.goto(-1100*scalefactor,-800*scalefactor)
-    #if players == 2:
-        #select4.goto(-1200*scalefactor,-800*scalefactor)
-        #no.goto(-1200*scalefactor,-800*scalefactor)
     if not astroid:
         no.showturtle()
     select4.showturtle()
@@ -1059,18 +1054,11 @@ def run():
                 target_change = target_change % 360
                 if target_change > 180:
                     target_change = target_change - 360
-                if target_change > 5:
-                    if misrot > -90 and not col:
-                        misrot -= .2
-                    else:
-                        misrot -= .6
-                elif target_change < -5:
-                    if misrot <90 and not col:
-                        misrot += .2
-                    else:
-                        misrot += .6
-                else:
-                    misrot = 0
+                if target_change > 45:
+                    target_change = 45
+                elif target_change < -45:
+                    target_change = -45
+                misrot = -target_change / 10.0
                 if mistar-misdir<=20 and mistar-misdir>=-20 and not col:
                     misyvel+=(math.sin(math.radians(misdir)))/5
                     misxvel+=(math.cos(math.radians(misdir)))/5
@@ -1183,18 +1171,8 @@ def run():
                 target_change = target_change % 360
                 if target_change > 180 and not fried:
                     target_change = target_change - 360
-                if target_change > 5 and not fried:
-                    if satrot > -9 and not col:
-                        satrot -= .2
-                    else:
-                        satrot -= 6
-                elif target_change < -5:
-                    if satrot <9 and not col:
-                        satrot += .2
-                    else: 
-                        satrot += .6
-                elif not fried:
-                    satrot = 0
+                if not fried:
+                    satrot = -target_change/ 12
                 if satar-satdir<=45 and satar-satdir>=-45 and not col and not fried:
                     satyvel+=(math.sin(math.radians(satdir)))/6
                     satxvel+=(math.cos(math.radians(satdir)))/6
