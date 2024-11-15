@@ -2,7 +2,7 @@ import turtle, math, time as t, random, keyboard, mouse, tkinter, os
 from just_playback import Playback
 playback = Playback()
 root = tkinter.Tk()
-version = 'V1.3.2'
+version = 'V1.3.3'
 
 width = root.winfo_screenwidth()
 height = root.winfo_screenheight()
@@ -123,6 +123,15 @@ select4.color(128,128,128)
 select4.shape('ast')
 select4.goto(-1100*scalefactor,-800*scalefactor)
 
+outline = ((15,100),(15,-100),(-15,-100),(-15,100),(15,100),(11,96),(11,-96),(-11,-96),(-11,96),(11,96))
+screen.register_shape('outline',outline)
+outline = turtle.Turtle()
+outline.shape('outline')
+outline.color(0,43,50)
+outline.penup()
+outline.speed(0)
+outline.hideturtle()
+
 playdisplay = turtle.Turtle()
 playdisplay.hideturtle()
 playdisplay.penup()
@@ -229,6 +238,7 @@ scale(misflame)
 scale(select4)
 scale(no)
 scale(lazer)
+scale(outline)
 
 def showtime(rtime):
     global time
@@ -325,9 +335,17 @@ def controls():
     litterbox()
     bledge.color(0,30,40)
     tredge.color(0,30,40)
-    while not pressed:
+    while not pressed: 
+        if is_within(725*scalefactor,-400*scalefactor,450*scalefactor,-425*scalefactor):
+            outline.goto(575*scalefactor,-410*scalefactor)
+            outline.color(0,60,80)
+            outline.shapesize(1.6*scalefactor,1.6*scalefactor)
+            outline.showturtle()
+        else:
+            outline.hideturtle()
         if keyboard.is_pressed('esc') or (mouse.is_pressed('left') and is_within(725*scalefactor,-400*scalefactor,450*scalefactor,-425*scalefactor)):
             pressed = True
+            outline.color(0,43,50)
             reset()
         if keyboard.is_pressed('s+down'):
             if not swapped:
@@ -337,10 +355,12 @@ def controls():
             pressed = True
             pen.clear()
             controls()
+        t.sleep(.02)
 
 def ask_mode():
     global mode
     turtle.tracer(0)
+    outline.hideturtle()
     pen.goto(0*scalefactor,80*scalefactor)
     pen.write('SELECT MODE',font=("Verdana",round(35*scalefactor)),align='center')
     pen.goto(-120*scalefactor,30*scalefactor)
@@ -355,27 +375,44 @@ def ask_mode():
     pressed = False
     t.sleep(.2)
     while not pressed:
+        outshow = 0
         if keyboard.is_pressed('1') or (mouse.is_pressed('left') and is_within(120*scalefactor,55*scalefactor,-120*scalefactor,25*scalefactor)):
             pen.clear()
             pressed = True
             mode = 'sat'
             ask_time()
+        elif is_within(90*scalefactor,55*scalefactor,-90*scalefactor,25*scalefactor):
+            outline.goto(10*scalefactor,45*scalefactor)
+            outshow = 1
         if keyboard.is_pressed('2') or (mouse.is_pressed('left') and is_within(120*scalefactor,25*scalefactor,-120*scalefactor,-5*scalefactor)):
             pen.clear()
             pressed = True
             mode = 'mis'
             ask_time()
+        elif is_within(90*scalefactor,25*scalefactor,-90*scalefactor,-5*scalefactor):
+            outline.goto(10*scalefactor,15*scalefactor)
+            outshow = 1
         if keyboard.is_pressed('3') or (mouse.is_pressed('left') and is_within(120*scalefactor,-5*scalefactor,-120*scalefactor,-35*scalefactor)):
             pen.clear()
             pressed = True
             askplay()
             return
+        elif is_within(90*scalefactor,-5*scalefactor,-90*scalefactor,-35*scalefactor):
+            outline.goto(10*scalefactor,-15*scalefactor)
+            outshow = 1
+        if outshow == 0:
+            outline.hideturtle()
+        else:
+            outline.shapesize(1.1*scalefactor,1.4*scalefactor)
+            outline.showturtle()
+        t.sleep(.02)
 
 def ask_time():
     global gtime
     global players
     turtle.tracer(0)
     timedisplay.clear()
+    outline.hideturtle()
     pen.goto(0*scalefactor,80*scalefactor)
     pen.write('SELECT GAME TIME',font=("Verdana",round(35*scalefactor)),align='center')
     pen.goto(-160*scalefactor,30*scalefactor)
@@ -403,22 +440,38 @@ def ask_time():
     turtle.tracer(1)
     t.sleep(.2)
     while not pressed:
+        outshow = 0
         if keyboard.is_pressed('1') or (mouse.is_pressed('left') and is_within(0*scalefactor,55*scalefactor,-160*scalefactor,25*scalefactor)):
             pressed = True
             gtime = 10
-        elif keyboard.is_pressed('2') or (mouse.is_pressed('left') and is_within(160*scalefactor,55*scalefactor,0*scalefactor,25*scalefactor)):
+        elif is_within(0*scalefactor,55*scalefactor,-160*scalefactor,25*scalefactor):
+            outline.goto(-90*scalefactor,45*scalefactor)
+            outshow = 1
+        if keyboard.is_pressed('2') or (mouse.is_pressed('left') and is_within(160*scalefactor,55*scalefactor,0*scalefactor,25*scalefactor)):
             pressed = True
             gtime = 20
-        elif keyboard.is_pressed('3') or (mouse.is_pressed('left') and is_within(0*scalefactor,25*scalefactor,-160*scalefactor,-5*scalefactor)):
+        elif is_within(160*scalefactor,55*scalefactor,0*scalefactor,25*scalefactor):
+            outline.goto(90*scalefactor,45*scalefactor)
+            outshow = 1
+        if keyboard.is_pressed('3') or (mouse.is_pressed('left') and is_within(0*scalefactor,25*scalefactor,-160*scalefactor,-5*scalefactor)):
             pressed = True
             gtime = 30
-        elif keyboard.is_pressed('4') or (mouse.is_pressed('left') and is_within(160*scalefactor,25*scalefactor,0*scalefactor,-5*scalefactor)):
+        elif is_within(0*scalefactor,25*scalefactor,-160*scalefactor,-5*scalefactor):
+            outline.goto(-90*scalefactor,15*scalefactor)
+            outshow = 1
+        if keyboard.is_pressed('4') or (mouse.is_pressed('left') and is_within(160*scalefactor,25*scalefactor,0*scalefactor,-5*scalefactor)):
             pressed = True
-            gtime = 45 
-        elif keyboard.is_pressed('5') or (mouse.is_pressed('left') and is_within(0*scalefactor,-5*scalefactor,-160*scalefactor,-35*scalefactor)):
+            gtime = 45
+        elif is_within(160*scalefactor,25*scalefactor,0*scalefactor,-5*scalefactor):
+            outline.goto(90*scalefactor,15*scalefactor)
+            outshow = 1 
+        if keyboard.is_pressed('5') or (mouse.is_pressed('left') and is_within(0*scalefactor,-5*scalefactor,-160*scalefactor,-35*scalefactor)):
             pressed = True
             gtime = 60
-        elif keyboard.is_pressed('6') or (mouse.is_pressed('left') and is_within(160*scalefactor,-5*scalefactor,0*scalefactor,-35*scalefactor)):
+        elif is_within(0*scalefactor,-5*scalefactor,-160*scalefactor,-35*scalefactor):
+            outline.goto(-90*scalefactor,-15*scalefactor)
+            outshow = 1
+        if keyboard.is_pressed('6') or (mouse.is_pressed('left') and is_within(160*scalefactor,-5*scalefactor,0*scalefactor,-35*scalefactor)):
             pen.clear()
             pressed = True
             if players == 1:
@@ -427,6 +480,15 @@ def ask_time():
             else:
                 askplay()
                 return
+        elif is_within(160*scalefactor,-5*scalefactor,0*scalefactor,-35*scalefactor):
+            outline.goto(90*scalefactor,-15*scalefactor)
+            outshow = 1
+        if outshow == 0:
+            outline.hideturtle()
+        else:
+            outline.shapesize(1.1*scalefactor,.8*scalefactor)
+            outline.showturtle()
+        t.sleep(.02)
     asktroid()
     return
             
@@ -435,6 +497,7 @@ def asktroid():
     global astroid
     global players
     turtle.tracer(0)
+    outline.hideturtle()
     pen.clear()
     pen.goto(0*scalefactor,80*scalefactor)
     pen.write('YES/NO ASTEROIDS',font=("Verdana",round(35*scalefactor)),align='center')
@@ -454,19 +517,35 @@ def asktroid():
     turtle.tracer(1)
     t.sleep(.2)
     while not pressed:
+        outshow = 0
         if keyboard.is_pressed('1') or (mouse.is_pressed('left') and is_within(90*scalefactor,55*scalefactor,-90*scalefactor,25*scalefactor)):
             pen.clear()
             pressed = True
             astroid = True
+        elif is_within(90*scalefactor,55*scalefactor,-90*scalefactor,25*scalefactor):
+            outline.goto(-20*scalefactor,45*scalefactor)
+            outshow = 1
         if keyboard.is_pressed('2') or (mouse.is_pressed('left') and is_within(90*scalefactor,25*scalefactor,-90*scalefactor,-5*scalefactor)):
             pen.clear()
             pressed = True
             astroid = False
+        elif is_within(90*scalefactor,25*scalefactor,-90*scalefactor,-5*scalefactor):
+            outline.goto(-20*scalefactor,15*scalefactor)
+            outshow = 1
         if keyboard.is_pressed('3') or (mouse.is_pressed('left') and is_within(90*scalefactor,-5*scalefactor,-90*scalefactor,-35*scalefactor)):
             pen.clear()
             pressed = True
             ask_time()
             return
+        elif is_within(90*scalefactor,-5*scalefactor,-90*scalefactor,-35*scalefactor):
+            outline.goto(-20*scalefactor,-15*scalefactor)
+            outshow = 1
+        if outshow == 0:
+            outline.hideturtle()
+        else:
+            outline.shapesize(1.1*scalefactor,.75*scalefactor)
+            outline.showturtle()
+        t.sleep(.02)
     pen.clear()
     playback.stop()
     thisdir = os.path.dirname(os.path.abspath(__file__))
@@ -486,6 +565,7 @@ def askplay():
     playback.loop_at_end(True)
     playdisplay.clear()
     timedisplay.clear()
+    outline.hideturtle()
     pen.goto(0*scalefactor,80*scalefactor)
     pen.write('MISSILE',font=("Verdana",round(35*scalefactor)),align='center')
     pen.goto(-80*scalefactor,30*scalefactor)
@@ -507,28 +587,48 @@ def askplay():
     bledge.color(64,64,64)
     t.sleep(.2)
     while not pressed:
+        outshow = 0
         if keyboard.is_pressed('1') or (mouse.is_pressed('left') and is_within(90*scalefactor,55*scalefactor,-90*scalefactor,25*scalefactor)):
             pen.clear()
             pressed = True
             players = 1
             ask_mode()
+        elif is_within(90*scalefactor,55*scalefactor,-90*scalefactor,25*scalefactor):
+            outline.goto(10*scalefactor,45*scalefactor)
+            outshow = 1
         if keyboard.is_pressed('2') or (mouse.is_pressed('left') and is_within(90*scalefactor,25*scalefactor,-90*scalefactor,-5*scalefactor)):
             pen.clear()
             pressed = True
             players = 2
             ask_time()
+        elif is_within(90*scalefactor,25*scalefactor,-90*scalefactor,-5*scalefactor):
+            outline.goto(10*scalefactor,15*scalefactor)
+            outshow = 1
         if keyboard.is_pressed('3') or (mouse.is_pressed('left') and is_within(90*scalefactor,-5*scalefactor,-90*scalefactor,-35*scalefactor)):
             pressed = True
             controls()
+        elif is_within(90*scalefactor,-5*scalefactor,-90*scalefactor,-35*scalefactor):
+            outline.goto(10*scalefactor,-15*scalefactor)
+            outshow = 1
         if keyboard.is_pressed('4') or (mouse.is_pressed('left') and is_within(90*scalefactor,-35*scalefactor,-90*scalefactor,-65*scalefactor)):
             quit()
             return
+        elif is_within(90*scalefactor,-35*scalefactor,-90*scalefactor,-65*scalefactor):
+            outline.goto(10*scalefactor,-45*scalefactor)
+            outshow = 1
+        if outshow == 0:
+            outline.hideturtle()
+        else:
+            outline.shapesize(1.1*scalefactor,1.05*scalefactor)
+            outline.showturtle()
+        t.sleep(.02)
 def start():
     global running
     global targx
     global targy
     global players
     turtle.tracer(0)
+    outline.hideturtle()
     if not astroid:
         no.showturtle()
     select4.showturtle()
@@ -691,6 +791,7 @@ def pause(player):
                 running = True
                 pressed = True
                 return
+        t.sleep(.02)
             
 def run():
     global satdir
