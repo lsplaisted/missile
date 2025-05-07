@@ -2,8 +2,10 @@ import turtle, math, time as t, random, keyboard, mouse, tkinter, os, Missile_BG
 from just_playback import Playback  
 playback = Playback()
 root = tkinter.Tk()
-version = 'V1.3.4A'
 
+version = 'V1.4.ALPHA'
+
+# set up screen
 width = root.winfo_screenwidth()
 height = root.winfo_screenheight()
 winwidth = turtle.window_width()
@@ -21,6 +23,7 @@ screenTk.attributes("-fullscreen", True)
 screen.colormode(255)
 screen.bgcolor('black')
 
+# missile setup
 missile_shape=((7,20),(0,30),(-7,20),(-7,-17),(-2,-17),(-3.5,-22),(3.5,-22),(2,-17),(7,-17))
 screen.register_shape('missile',missile_shape)
 missile=turtle.Turtle()
@@ -48,6 +51,7 @@ lazer.hideturtle()
 lazercd = 0
 showlaz = 0
 
+# satellite setup
 sp=((30,8),(-30,8),(-30,-8),(30,-8))
 screen.register_shape('panel',sp)
 panel=turtle.Turtle()
@@ -77,24 +81,26 @@ fried = 0
 defence = 0
 dcd=0
 
+# pen setup
 pen=turtle.Turtle()
 pen.hideturtle()
 pen.penup()
 pen.color('white')
 pen.speed(0)
 
-bledge = turtle.Turtle()
-bledge.penup()
-bledge.shape('square')
-bledge.speed(0)
-bledge.color(64,64,64)
-bledge.hideturtle()
-tredge = turtle.Turtle()
-tredge.penup()
-tredge.shape('square')
-tredge.speed(0)
-tredge.color(64,64,64)
-tredge.hideturtle()
+# edge setup
+bottom_edge = turtle.Turtle()
+bottom_edge.penup()
+bottom_edge.shape('square')
+bottom_edge.speed(0)
+bottom_edge.color(64,64,64)
+bottom_edge.hideturtle()
+top_edge = turtle.Turtle()
+top_edge.penup()
+top_edge.shape('square')
+top_edge.speed(0)
+top_edge.color(64,64,64)
+top_edge.hideturtle()
 
 display=turtle.Turtle()
 display.hideturtle()
@@ -198,27 +204,27 @@ def litterbox():
     global height, width, scalefactor
     winwidth = turtle.window_width()
     winheight = turtle.window_height()
-    bledge.showturtle()
-    tredge.showturtle()
+    bottom_edge.showturtle()
+    top_edge.showturtle()
     if winwidth/winheight < 16/9:
         y = (((winwidth/16)*9)/2)
         bandheight = winheight / 2 - y
-        tredge.goto(0, winheight / 2 - bandheight / 2 )
-        bledge.goto(0, (winheight / 2 - bandheight / 2) * -1 )
-        tredge.shapesize(bandheight/20, winwidth/20)
-        bledge.shapesize(bandheight/20, winwidth/20)
+        top_edge.goto(0, winheight / 2 - bandheight / 2 )
+        bottom_edge.goto(0, (winheight / 2 - bandheight / 2) * -1 )
+        top_edge.shapesize(bandheight/20, winwidth/20)
+        bottom_edge.shapesize(bandheight/20, winwidth/20)
         scalefactor = winwidth/1536
     if winwidth/winheight > 16/9:
         x = (((winheight/9)*16)/2)
         bandwidth = winwidth / 2 - x
-        tredge.goto(winwidth / 2 - bandwidth / 2, 0)
-        bledge.goto((winwidth / 2 - bandwidth / 2) * -1, 0)
-        tredge.shapesize( winheight/20,bandwidth/20)
-        bledge.shapesize( winheight/20,bandwidth/20)
+        top_edge.goto(winwidth / 2 - bandwidth / 2, 0)
+        bottom_edge.goto((winwidth / 2 - bandwidth / 2) * -1, 0)
+        top_edge.shapesize( winheight/20,bandwidth/20)
+        bottom_edge.shapesize( winheight/20,bandwidth/20)
         scalefactor = winheight/960
 litterbox()
-bledge.hideturtle()
-tredge.hideturtle()
+bottom_edge.hideturtle()
+top_edge.hideturtle()
 
 def scale(target,x=1,y=1):
     global height,width
@@ -334,11 +340,11 @@ def controls():
     turtle.tracer(1)
     pressed = False
     litterbox()
-    bledge.color(0,30,40)
-    tredge.color(0,30,40)
+    bottom_edge.color(0,30,40)
+    top_edge.color(0,30,40)
     Missile_BG.draw_bg_shape(Missile_BG.Big_dipper, scale=scalefactor)
     Missile_BG.draw_bg_shape(Missile_BG.Small_dipper, 20, 200, 1.5)
-    Missile_BG.draw_random_stars(300, scale=scalefactor)
+    Missile_BG.draw_random_stars(scale=scalefactor)
     while not pressed: 
         if is_within(725*scalefactor,-400*scalefactor,450*scalefactor,-425*scalefactor):
             outline.goto(575*scalefactor,-410*scalefactor)
@@ -588,8 +594,8 @@ def askplay():
     select4.hideturtle()
     turtle.tracer(1)
     pressed = False
-    tredge.color(64,64,64)
-    bledge.color(64,64,64)
+    top_edge.color(64,64,64)
+    bottom_edge.color(64,64,64)
     t.sleep(.2)
     while not pressed:
         outshow = 0
@@ -761,8 +767,8 @@ def reset():
     scale(satelite)
     satflame.hideturtle()
     misflame.hideturtle()
-    bledge.hideturtle()
-    tredge.hideturtle()
+    bottom_edge.hideturtle()
+    top_edge.hideturtle()
     pen.clear()
     display.clear()
     turtle.tracer(1)
@@ -876,7 +882,7 @@ def run():
                 pen.goto(0,0)
                 display.clear()
                 turtle.tracer(1)
-                pen.write('satelite WINS',font=("Verdana",35, "normal"),align='center')
+                pen.write('SATELITE WINS',font=("Verdana",35, "normal"),align='center')
                 t.sleep(1)
                 reset()
                 return
@@ -920,6 +926,8 @@ def run():
                 astrng = 20
             elif gtime - time < 5:
                 astrng = 40
+
+            # asteriod spawning
             if random.randrange(1,round(gtime-time)+astrng) == 1 and astroid:
                 side = random.randrange(1,5)
                 if side == 1:
@@ -966,6 +974,8 @@ def run():
                     astroids[ast].speed(0)
                     astroids[ast].shape('circle')
                     astroids[ast].goto(astxy[ast])
+
+            # astroid movement
             if len(astroids) > 0:
                 for astro in range(len(astroids)):
                     astxy[astro][0] += astvel[astro][0]
@@ -1335,7 +1345,8 @@ def run():
                         lazer.showturtle()
                         lazer.penup()
                         showlaz = 1
-                
+
+            # Boarder collision    
             if satx>740*scalefactor:
                 satxvel=-2.5*scalefactor
                 satyvel=0
@@ -1360,6 +1371,8 @@ def run():
             if misy<-400*scalefactor:
                 misxvel=0
                 misyvel=2.5*scalefactor
+
+        # re-run function
         litterbox()
         screen.tracer(1)
         screen.ontimer(run, 20)
@@ -1367,7 +1380,7 @@ def run():
 # draw sky
 Missile_BG.draw_bg_shape(Missile_BG.Big_dipper, scale=scalefactor)
 Missile_BG.draw_bg_shape(Missile_BG.Small_dipper, 20, 200, 1.5)
-Missile_BG.draw_random_stars(100, scale=scalefactor)
+Missile_BG.draw_random_stars(scale=scalefactor)
 
 askplay()
 turtle.mainloop()
