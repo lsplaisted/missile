@@ -1,8 +1,8 @@
-import turtle, math, time as t, random, keyboard, mouse, tkinter, os
-from just_playback import Playback
+import turtle, math, time as t, random, keyboard, mouse, tkinter, os, Missile_BG
+from just_playback import Playback  
 playback = Playback()
 root = tkinter.Tk()
-version = 'V1.3.3'
+version = 'V1.3.4A'
 
 width = root.winfo_screenwidth()
 height = root.winfo_screenheight()
@@ -56,13 +56,13 @@ panel.speed(0)
 panel.shape('panel')
 panel.color(0,0,102)
 
-satilite=((10,10),(-10,10),(-10,-10),(-4,-10),(-7,-15),(7,-15),(4,-10),(10,-10))
-screen.register_shape('satilite',satilite)
-satilite=turtle.Turtle()
-satilite.penup()
-satilite.shape('satilite')
-satilite.speed(0)
-satilite.color(255, 215, 0)
+satelite=((10,10),(-10,10),(-10,-10),(-4,-10),(-7,-15),(7,-15),(4,-10),(10,-10))
+screen.register_shape('satelite',satelite)
+satelite=turtle.Turtle()
+satelite.penup()
+satelite.shape('satelite')
+satelite.speed(0)
+satelite.color(255, 215, 0)
 
 satflame=((7,-15),(8,-20),(10,-40),(-10,-40),(-8,-20),(-7,-15))
 screen.register_shape('satflame',satflame)
@@ -179,7 +179,7 @@ astroid = True
 swapped = False
 
 panel.goto(satx,saty)
-satilite.goto(satx,saty)
+satelite.goto(satx,saty)
 missile.goto(misx,misy)
 turtle.tracer(1)
 
@@ -231,7 +231,7 @@ def scale(target,x=1,y=1):
     target.shapesize(scalefactor*x,scalefactor*y)
 
 scale(missile)
-scale(satilite)
+scale(satelite)
 scale(panel)
 scale(satflame)
 scale(misflame)
@@ -254,9 +254,10 @@ def controls():
     global swapped
     pen.clear()
     panel.goto(-700*scalefactor,330*scalefactor)
-    satilite.goto(-700*scalefactor,330*scalefactor)
+    satelite.goto(-700*scalefactor,330*scalefactor)
     missile.goto(-700*scalefactor,180*scalefactor)
     missile.setheading(90)
+    Missile_BG.clear_sky()
     screen.bgcolor(0,43,50)
     turtle.tracer(0)
     t.sleep(.2)
@@ -335,6 +336,9 @@ def controls():
     litterbox()
     bledge.color(0,30,40)
     tredge.color(0,30,40)
+    Missile_BG.draw_bg_shape(Missile_BG.Big_dipper, scale=scalefactor)
+    Missile_BG.draw_bg_shape(Missile_BG.Small_dipper, 20, 200, 1.5)
+    Missile_BG.draw_random_stars(300, scale=scalefactor)
     while not pressed: 
         if is_within(725*scalefactor,-400*scalefactor,450*scalefactor,-425*scalefactor):
             outline.goto(575*scalefactor,-410*scalefactor)
@@ -432,7 +436,7 @@ def ask_time():
     pressed = False
     if players == 1:
         if mode == 'sat':
-            select1.shape('satilite')
+            select1.shape('satelite')
         if mode == 'mis':
             select1.shape('missile')
         scale(select1,.75,.75)
@@ -555,6 +559,7 @@ def asktroid():
     playback.loop_at_end(True)
     start()
 
+# main menu
 def askplay():
     global players, version
     turtle.tracer(0)
@@ -736,13 +741,13 @@ def reset():
     astroid = True
     missile.goto(misx,misy)
     missile.right(missile.heading()-360)
-    satilite.goto(satx,saty)
-    satilite.right(satilite.heading()-360)
+    satelite.goto(satx,saty)
+    satelite.right(satelite.heading()-360)
     panel.goto(satx,saty)
     panel.right(panel.heading()-360)
-    satilite.shapesize(1,1)
-    satilite.shape('satilite')
-    satilite.color(255, 215, 0)
+    satelite.shapesize(1,1)
+    satelite.shape('satelite')
+    satelite.color(255, 215, 0)
     missile.color('white')
     missile.shape('missile')
     lazercd = 0
@@ -753,7 +758,7 @@ def reset():
     defence=0
     dcd=0
     scale(missile)
-    scale(satilite)
+    scale(satelite)
     satflame.hideturtle()
     misflame.hideturtle()
     bledge.hideturtle()
@@ -813,7 +818,9 @@ def run():
     global swapped
     global lazercd, showlaz, fried, defence, dcd
     screenTk.attributes("-fullscreen", True)
+    turtle.tracer(0)
     if running:
+        outline.hideturtle()
         if keyboard.is_pressed('esc'):
             reset()
             return
@@ -841,26 +848,26 @@ def run():
         if fried < 0:
             fried = 0
             if defence <= 0:
-                satilite.color(255, 215, 0)
+                satelite.color(255, 215, 0)
         if defence<0:
             defence = 0
         if dcd<0:
             dcd=0
             if fried <= 0:
-                satilite.color(255, 215, 0)
+                satelite.color(255, 215, 0)
         if time >=- .1 and time <= .1:
             showtime("GO!")
         elif time %1 <= .1 and time %1 >=- .1 and time > 0:
             showtime(gtime-round(time))
         elif time %1 <=.1 and time %1 >=-.1 and time<0:
             showtime(round(abs(time)))
-        satdir=satilite.heading()
+        satdir=satelite.heading()
         misdir=missile.heading()
         if (satdir>panel.heading()+1) or (satdir<panel.heading()-1):
-            panel.right(panel.heading()-360-satilite.heading())
+            panel.right(panel.heading()-360-satelite.heading())
         if misdir<0:
             misdir+=360
-        satilite.right(satrot)
+        satelite.right(satrot)
         panel.right(satrot)
         if time>0:
             missile.right(misrot)
@@ -869,20 +876,20 @@ def run():
                 pen.goto(0,0)
                 display.clear()
                 turtle.tracer(1)
-                pen.write('SATILITE WINS',font=("Verdana",35, "normal"),align='center')
+                pen.write('satelite WINS',font=("Verdana",35, "normal"),align='center')
                 t.sleep(1)
                 reset()
                 return
             satx += satxvel*scalefactor
             saty += satyvel*scalefactor
-            satilite.goto(satx,saty)
+            satelite.goto(satx,saty)
             panel.goto(satx,saty)
             misx += misxvel*scalefactor
             misy += misyvel*scalefactor
             missile.goto(misx,misy)
             if (misx <= satx + 30*scalefactor) and (misx >= satx - 30*scalefactor) and (misy <= saty+30*scalefactor) and (misy >= saty - 30*scalefactor):
                 missile.hideturtle()
-                explode(satilite)
+                explode(satelite)
                 pen.goto(0,0)
                 display.clear()
                 pen.write('MISSILE WINS',font=("Verdana",round(35*scalefactor)),align='center')
@@ -891,7 +898,7 @@ def run():
                 return
             for pos in astxy:
                 if (pos[0] <= satx + 30*scalefactor and pos[0] >= satx - 30*scalefactor) and (pos[1] <= saty + 30*scalefactor and pos[1] >= saty - 30*scalefactor) and defence == 0:
-                    explode(satilite)
+                    explode(satelite)
                     pen.goto(0,0)
                     display.clear()
                     pen.write('MISSILE WINS',font=("Verdana",round(35*scalefactor)),align='center')
@@ -1005,7 +1012,7 @@ def run():
                     if keyboard.is_pressed('s') and fried == 0 and dcd ==0:
                         defence = 3
                         dcd = 5
-                        satilite.color(0,30,40)
+                        satelite.color(0,30,40)
                     if keyboard.is_pressed('up'):
                         misyvel+=(math.sin(math.radians(misdir)))/5
                         misxvel+=(math.cos(math.radians(misdir)))/5
@@ -1040,7 +1047,7 @@ def run():
                         if mistar-misdir <= 15 and mistar-misdir >= -15 and defence == 0 and defence == 0:
                             lazer.goto(satx,saty)
                             fried = 3
-                            satilite.color(100,100,100)
+                            satelite.color(100,100,100)
                         elif mistar-misdir <= 15 and mistar-misdir >= -15 and defence == 0 and defence > 0:
                             lazer.goto(satx,saty)
                         else:
@@ -1078,7 +1085,7 @@ def run():
                     if keyboard.is_pressed('down') and fried == 0 and dcd ==0:
                         defence = 3
                         dcd = 5
-                        satilite.color(0,30,40)
+                        satelite.color(0,30,40)
                     if keyboard.is_pressed('w'):
                         misyvel+=(math.sin(math.radians(misdir)))/5
                         misxvel+=(math.cos(math.radians(misdir)))/5
@@ -1113,7 +1120,7 @@ def run():
                         if mistar-misdir <= 15 and mistar-misdir >= -15 and defence == 0:
                             lazer.goto(satx,saty)
                             fried = 3
-                            satilite.color(100,100,100)
+                            satelite.color(100,100,100)
                         elif mistar-misdir <= 15 and mistar-misdir >= -15 and defence == 0 and defence > 0:
                             lazer.goto(satx,saty)
                         else:
@@ -1195,7 +1202,7 @@ def run():
                         if mistar-misdir <= 15 and mistar-misdir >= -15 and defence == 0:
                             lazer.goto(satx,saty)
                             fried = 3
-                            satilite.color(100,100,100)
+                            satelite.color(100,100,100)
                         else:
                             lazer.forward(2000*scalefactor)
                         lazer.showturtle()
@@ -1231,7 +1238,7 @@ def run():
                 if (keyboard.is_pressed('s') or keyboard.is_pressed('down')) and fried == 0 and dcd ==0:
                         defence = 3
                         dcd = 5
-                        satilite.color(0,30,40)
+                        satelite.color(0,30,40)
             elif mode == 'mis':
                 col = False
                 if (targx-satx<25 and targx-satx>25) and (targy-saty<25 and targy-saty>25):
@@ -1250,13 +1257,13 @@ def run():
                             colxy[1][1] += satyvel
                             if (colxy[0][0] <= colxy[1][0] + 30*scalefactor and colxy[0][0] >= colxy[1][0] - 30*scalefactor) and (colxy[0][1] <= colxy[1][1] + 30*scalefactor and colxy[0][1] >= colxy[1][1] - 30*scalefactor):
                                 col = True
-                                satar = satilite.towards(astroids[ast])+90
+                                satar = satelite.towards(astroids[ast])+90
                                 if satx-targx>0:
                                     satar += 180
                                     if fried == 0 and dcd ==0:
                                         defence = 3
                                         dcd = 5
-                                        satilite.color(0,30,40)
+                                        satelite.color(0,30,40)
                 if targx-satx!=0 and not col:
                     satar=math.degrees(math.atan((targy-saty)/(targx-satx)))
                     if satx-targx>0:
@@ -1322,7 +1329,7 @@ def run():
                         if mistar-misdir <= 15 and mistar-misdir >= -15 and defence == 0:
                             lazer.goto(satx,saty)
                             fried = 3
-                            satilite.color(100,100,100)
+                            satelite.color(100,100,100)
                         else:
                             lazer.forward(2000*scalefactor)
                         lazer.showturtle()
@@ -1356,6 +1363,11 @@ def run():
         litterbox()
         screen.tracer(1)
         screen.ontimer(run, 20)
+
+# draw sky
+Missile_BG.draw_bg_shape(Missile_BG.Big_dipper, scale=scalefactor)
+Missile_BG.draw_bg_shape(Missile_BG.Small_dipper, 20, 200, 1.5)
+Missile_BG.draw_random_stars(100, scale=scalefactor)
 
 askplay()
 turtle.mainloop()
